@@ -398,7 +398,7 @@ BOOKS = [
                "and tribal knowledge. Dream it, build it, optimize it, monetize it.",
          cov=["EXCEPTIONAL","SYSTEMS"]),
     dict(slug="exceptional-stewardship", t="Exceptional Stewardship", os="Installs the Exceptional Wealth OS",
-         authors="Chris Seegers", status="soon", statlbl="Q2 2028",
+         authors="Tara Seegers and Chris Seegers", status="soon", statlbl="Q2 2028",
          yr="2028", when="Anticipated Q2 2028",
          blurb="The third book completes the trilogy: what happens to money once it arrives, "
                "how it works, and how it leaves well.",
@@ -845,9 +845,11 @@ books = pagehead("Books", "The Library",
     <div class="eyebrow">The trilogy</div>
     <h2 class="h1 mt2">Life. Business. Wealth.</h2>
     <hr class="accentrule mt3">
-    <p class="lead mt3">The tagline is not decoration &mdash; it is the table of contents. Each
-      book installs the operating system for one of the three, and each is written so it stands
-      alone if that is the only one you need right now.</p>
+    <p class="lead mt3">Nothing in these books is theory. Our team battle-tested every system in
+      them &mdash; building an exceptional life, an exceptional business and exceptional wealth
+      inside our own companies, on our own money, before a word of it went on a page.</p>
+    <p class="lead mt2">The books are the introduction. The operating systems are what carry it
+      through.</p>
     <p class="lead mt2">Anticipated: <i>Exceptional by Design</i> Q1 2027,
       <i>Exceptional Systems</i> Q4 2027, <i>Exceptional Stewardship</i> Q2 2028. Chapter four of
       the first is already <a href="/books/exceptional-by-design/excerpt/">up in full</a>.</p>
@@ -914,7 +916,7 @@ write("/books/", "Books — Exceptional Media",
         "hasPart": [
           book_ld("Exceptional by Design", [CHRIS, TARA], "/books/exceptional-by-design/"),
           book_ld("Exceptional Systems", [CHRIS, MARCUS], "/books/exceptional-systems/"),
-          book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/"),
+          book_ld("Exceptional Stewardship", [TARA, CHRIS], "/books/exceptional-stewardship/"),
           book_ld("Selling Main Street", [CHRIS], "/books/", "2024",
                   buy="https://www.amazon.com/dp/B0D2B72W18"),
           book_ld("Buying Main Street", [CHRIS], "/books/", "2025",
@@ -1403,8 +1405,8 @@ stw = f"""
     <div class="eyebrow">Book three &middot; The Exceptional Wealth OS</div>
     <h1 class="display mt2">Exceptional<br>Stewardship</h1>
     <hr class="accentrule wide mt3">
-    <p class="lead mt3">The book that completes the trilogy &mdash; what happens to money once it
-      arrives, how it works, and how it leaves well.</p>
+    <p class="lead mt3">Tara Seegers and Chris Seegers on what happens to money once it arrives,
+      how it works, and how it leaves well. The book that completes the trilogy.</p>
     <div class="mt3"><span class="pill pill--soon">Anticipated Q2 2028</span></div>
   </div>
 </section>
@@ -1432,7 +1434,7 @@ stw = f"""
           is a thing you are responsible for on behalf of people who are not in the room.</p>
 
         <div class="mt4">
-          <div class="factrow"><span class="k">Author</span><span>Chris Seegers</span></div>
+          <div class="factrow"><span class="k">Authors</span><span>Tara Seegers and Chris Seegers</span></div>
           <div class="factrow"><span class="k">Position</span><span>Book three of three</span></div>
           <div class="factrow"><span class="k">System</span><span>The Exceptional Wealth OS</span></div>
           <div class="factrow"><span class="k">Publication</span><span>In development. Anticipated Q2 2028.</span></div>
@@ -1468,7 +1470,7 @@ stw = f"""
         <div class="title">Exceptional Systems</div>
         <p>Installs the Exceptional Business OS. Build the company so it can run &mdash; and be handed on &mdash; without you.</p>
         <a class="go" href="/books/exceptional-systems/">Read more &rsaquo;</a></div>
-      <div class="card card--dark" style="border-left-color:#fff"><div class="kicker">Book three</div>
+      <div class="card card--dark" style="border-left-color:#fff"><div class="kicker">Book three &middot; Tara and Chris Seegers</div>
         <div class="title">Exceptional Stewardship</div>
         <p>Installs the Exceptional Wealth OS. Steward what the first two produced, and hand it off on purpose.</p>
         <span class="go" style="opacity:.7">In development</span></div>
@@ -1486,11 +1488,12 @@ stw = f"""
 #      throughout, so that stop is already satisfied.
 write("/books/exceptional-stewardship/", "Exceptional Stewardship — Book Three of the Exceptional Trilogy",
       "The third book in the Exceptional trilogy: what happens to money once it arrives, how it "
-      "works, and how it leaves well. It installs the Exceptional Wealth OS. In development.", stw, depth=2,
+      "works, and how it leaves well. Tara and Chris Seegers on the Exceptional Wealth OS, "
+      "anticipated Q2 2028.", stw, depth=2,
       schema=graph(
         crumbs(("Home", "/"), ("Books", "/books/"),
                ("Exceptional Stewardship", "/books/exceptional-stewardship/")),
-        book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/",
+        book_ld("Exceptional Stewardship", [TARA, CHRIS], "/books/exceptional-stewardship/",
                 about=["Wealth stewardship", "Family governance", "Legacy planning"])))
 
 # ── Press kit · Exceptional by Design ────────────────────────────────────
@@ -2017,7 +2020,10 @@ about = pagehead("About", "Why we<br>publish.",
       <div class="card card--dark">
         <div class="kicker">Co-author &middot; Exceptional by Design</div>
         <div class="title">Tara Seegers</div>
-        <p>Tara co-wrote <i>Exceptional by Design</i> and co-leads the ecosystem. She
+        <p>Tara co-wrote <i>Exceptional by Design</i> and is co-writing <i>Exceptional
+          Stewardship</i>, the Wealth OS &mdash; she is a Certified Financial Planner&trade; named
+          to Forbes&rsquo; Top Women Wealth Advisors Best-In-State list. She co-leads the
+          ecosystem. She
           had the vision for Hillside and ran it &mdash; within three years the town was
           immaculate, profitable and growing, with people driving in from all over for events,
           milestones and the stargazing.</p>
