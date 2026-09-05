@@ -758,7 +758,7 @@ home = f"""
     <div class="split">
       <div>
         <div class="eyebrow">In print</div>
-        <h2 class="h1 mt2">EXCEPTIONAL</h2>
+        <h2 class="h1 mt2">EXCEPTIONAL.</h2>
         <hr class="accentrule mt3">
         <p class="lead mt3">A quarterly magazine for Main Street owners and the advisors around
           them. One article per vertical, every issue: Life, Business, Wealth.</p>
