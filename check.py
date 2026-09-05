@@ -24,7 +24,11 @@ check("internal links resolve", bad)
 
 # 2 · prohibited and superseded copy — Fact Ledger + Brand Standards v1.0
 PROHIBITED = [
-    r"mediocrity", r"reject mediocr", r"built on purpose", r"rockport", r"pegasus ranch",
+    # Brand Standards v1.0 prohibits ANY variation on rejecting mediocrity, not just the
+    # two named lines: "Say what we build, not what we reject." These catch the construction.
+    r"mediocrity", r"reject mediocr", r"not ok with average", r"not okay with average",
+    r"refuse to settle", r"settle for average", r"tired of average", r"done settling",
+    r"built on purpose", r"rockport", r"pegasus ranch",
     r"royalty acre", r"\$550", r"\bCEPA\b", r"\bMMP\b", r"legally blind", r"\$10T",
     r"#1 business podcast", r"hundreds of business exits", r"\bAllstate\b",
     r"132[,K]", r"212[,K]", r"\b58\+", r"\b85\+", r"prototype", r"lorem ipsum",

@@ -320,3 +320,11 @@ main{display:block}
    four fifths empty. Aligned tops, ragged bottoms, which is the honest shape here. */
 .grid--top{align-items:start}
 .grid--top .card{height:auto}
+
+/* Hero tagline lockup. Gold on navy clears AA at 5.82:1 — verified, not assumed.
+   Gold on white is 1.74:1 and never carries type; this pairing is the exception. */
+.herotag{
+  font-family:var(--font-primary);font-weight:600;font-size:clamp(13px,1.5vw,17px);
+  letter-spacing:.30em;text-transform:uppercase;color:var(--accent);
+}
+@media (max-width:520px){.herotag{letter-spacing:.18em}}
