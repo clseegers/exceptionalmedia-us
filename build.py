@@ -629,7 +629,7 @@ home = f"""
     <div class="eyebrow">Exceptional Media &middot; Colorado Springs</div>
     <h1 class="display mt3">Everything<br>we have<br>published.</h1>
     <hr class="accentrule wide mt4">
-    <p class="lead mt4">Books, tools, podcasts, and a quarterly magazine for people craving
+    <p class="lead mt4">Books, tools, podcasts, and a quarterly magazine for people in pursuit of
       exceptional.</p>
     <div class="herotag mt3">Life. Business. Wealth.</div>
     <div class="btnrow mt4">
