@@ -656,8 +656,9 @@ home = f"""
       </div>
       <div>
         <div class="eyebrow"><a href="https://www.exceptionalwealth.us" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Wealth &middot; Family Office</a></div>
-        <p class="small mt1" style="color:var(--ink)">What happens to the proceeds, the family, the
-          plan and the legacy &mdash; utilizing your resources to live the life you designed.</p>
+        <p class="small mt1" style="color:var(--ink)">What happens to the family, the plan and the
+          legacy after the wire hits &mdash; utilizing your resources to live the life you
+          designed.</p>
       </div>
       <div>
         <div class="eyebrow"><a href="https://insureexceptional.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Insurance</a></div>
