@@ -24,6 +24,12 @@ cross-family piece cannot wear one entity's accent.
 404.html · robots.txt · sitemap.xml
 assets/exco-media.css               One stylesheet, ~260 lines, all tokens at the top
 build.py                            Regenerates every page. Edit here, not the HTML.
+check.py                            Build gate — runs in CI, fails the deploy on any problem
+make_preview.py                     Bundles the site into one shareable preview.html
+DEPLOY.md                           Go-live steps and the exact DNS records
+.github/workflows/deploy.yml        Build, check, deploy on push to main
+CNAME · .nojekyll · .gitignore
+books/exceptional-by-design/excerpt/   Chapter four, in full
 ```
 
 **Edit `build.py`, not the `.html` files.** Every page shares one header, one footer, and one
@@ -32,15 +38,15 @@ by editing `assets/exco-media.css`.
 
 ## Deploy
 
-Clean URLs work out of the box — every page is a directory with an `index.html`.
+**See `DEPLOY.md`** — step by step, with the exact Route 53 records.
 
-- **Netlify / Vercel / Cloudflare Pages** — drag the folder in, or point it at a repo. No build
-  command. Publish directory is the folder root.
-- **Apache / nginx / cPanel** — upload the folder to the web root as-is.
-- Point `exceptionalmedia.us` and `www.exceptionalmedia.us` at it, and make sure **both** resolve.
-  A www variant that isn't covered is the single most common way a launch link "doesn't work."
+Short version: GitHub Pages, same as chrisseegers.com. The repo is initialised and committed,
+`CNAME` holds the domain, and `.github/workflows/deploy.yml` regenerates the site from `build.py`
+and runs `check.py` before every deploy. Push, set Pages source to **GitHub Actions**, swap the
+apex A records off AWS parking onto GitHub's four IPs, point `www` at `<account>.github.io`, and
+enforce HTTPS.
 
-Local preview: `python3 -m http.server 8000` then open `http://localhost:8000`.
+Local: `python3 build.py && python3 check.py && python3 -m http.server 8000`
 
 ---
 
@@ -211,3 +217,47 @@ arrive pre-labelled.
 
 **To change the address**, edit `MAIL_U` and `MAIL_D` at the top of `build.py` and rebuild. It is
 in one place.
+
+
+---
+
+## BUILT OUT — Sept 5, deeper book pages
+
+**Real tables of contents.** *Exceptional by Design* carries its full seventeen chapters across
+four phases, transcribed from `Exceptional_by_Design_4-13-26.docx`. *Exceptional Systems* carries
+the fifteen-chapter structure from the redline spec's "New Table of Contents (Locked)."
+
+**Chapter four, in full, at `/books/exceptional-by-design/excerpt/`.** "Create Your Life Vision" —
+Getting Quiet and the ten-year vision exercise, reproduced verbatim. Not a teaser; a sample that
+stops at the interesting part is not a sample. Linked from the book page and the catalogue.
+
+**Bulk and institutional orders** on every book page and on `/books/` — volume, licensing for
+cohort or classroom use, and examination copies, each with a pre-labelled email subject.
+
+**Note on the excerpt's voice.** The chapter is first-person singular because that is the
+*authors'* voice in the book. The site's plural rule governs our own copy, not quoted book text.
+`check.py` passes it; do not "fix" it.
+
+---
+
+## MORE OPEN ITEMS FROM THE BUILD-OUT
+
+**10 · Clear the *Exceptional Systems* table of contents.** It comes from a redline spec, an
+internal working document. The structure is marked locked, but publishing it commits you publicly
+to that structure while the text is still in edit. Chris signs off or it comes down.
+
+**11 · Clear the excerpt.** Publishing chapter four pre-launch is a real decision, not a formatting
+one. Confirm before the site goes public.
+
+**12 · Which excerpt?** I used chapter four rather than the Introduction. The Introduction tells
+the story of Tara's April 2020 health emergency — that is the authors' story to place, and putting
+a family medical emergency on a marketing page is Chris and Tara's call, not mine. Chapter four is
+also the stronger sales excerpt. Say the word and the Introduction goes up instead.
+
+**13 · Endorsements.** The component is built and renders the moment it has data —
+`ENDORSEMENTS[slug] = [(quote, name, title), ...]` at the top of `build.py`. It is empty because no
+endorsement exists in any source, and one is not inventable. A book page without praise at launch
+is a soft spot worth closing.
+
+**14 · No excerpt for *Exceptional Systems* or *Exceptional Stewardship*.** Systems is mid-revision
+per the redline; Stewardship has no manuscript. Both would need clearance and text.
