@@ -771,7 +771,8 @@ home = f"""
       </div>
       <div>
         <blockquote class="pull" style="border-left-color:var(--accent);color:#fff">
-          Every article leads with a place the conventional advice is wrong. That is the engine.
+          Making the complex simple. Every article aims to provide clarity &mdash; and call out
+          conventional advice when it doesn&rsquo;t make sense.
           <cite>Editorial standard no. 4</cite>
         </blockquote>
       </div>
