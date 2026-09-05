@@ -663,7 +663,7 @@ home = f"""
       <div>
         <div class="eyebrow"><a href="https://insureexceptional.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Insurance</a></div>
         <p class="small mt1" style="color:var(--ink)">Protection for all of it &mdash; home, auto,
-          umbrella. Plus the life, estate, key person and buy-sell liquidity that can turn an
+          umbrella. Plus the life, estate, key person and buy-sell coverage that can turn an
           exit into opportunity.</p>
       </div>
       <div>
