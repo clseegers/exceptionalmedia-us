@@ -668,9 +668,9 @@ home = f"""
       </div>
       <div>
         <div class="eyebrow"><a href="https://exceptionalcos.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Companies</a></div>
-        <p class="small mt1" style="color:var(--ink)">Our Innovation Company; the operating portfolio
-          where the systems get stress-tested and our own resources are deployed to live the
-          life we designed.</p>
+        <p class="small mt1" style="color:var(--ink)">An Innovation Company: the operating portfolio
+          where the systems get stress-tested across industries and our own resources are
+          deployed to live the life we designed.</p>
       </div>
     </div>
   </div>
