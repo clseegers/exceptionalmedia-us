@@ -106,6 +106,27 @@ link fails for exactly the person you most wanted to see it.
 
 ---
 
+## Autopush — start it once, leave it running
+
+```bash
+cd ~/Projects/exceptionalmedia-us && ./autopush.sh
+```
+
+Leave that Terminal window open. It checks every twenty seconds, and when work lands in the repo
+it rebuilds, runs the gate, commits anything loose, and pushes. GitHub Actions takes it from there.
+
+**It will not push a broken build.** `check.py` runs first; a failure stops the push and says so
+rather than shipping it.
+
+**Why this exists.** Claude can write files and make commits in this folder through the desktop
+bridge, but the sandbox it works in has no network and no access to your SSH key — it can see the
+connected folder and nothing else in your home directory. It physically cannot push. This script
+runs on your machine with your key, so no credential ever has to be handed to anything.
+
+Ctrl-C stops it. Safe to start and stop whenever. `./autopush.sh 60` to check every minute instead.
+
+---
+
 ## Afterwards
 
 **To change anything:** edit `build.py` or `assets/exco-media.css`, commit, push. The action
