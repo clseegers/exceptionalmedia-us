@@ -634,6 +634,7 @@ home = f"""
     <div class="herotag mt3">Life. Business. Wealth.</div>
     <div class="btnrow mt4">
       <a class="btn" href="/books/">The books</a>
+      <a class="btn btn--ghost" href="https://exceptional-os.com" rel="noopener" target="_blank">The tools</a>
       <a class="btn btn--ghost" href="/podcasts/">The shows</a>
     </div>
   </div>
