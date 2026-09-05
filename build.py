@@ -264,7 +264,7 @@ def endorsements(slug):
     return ('<section class="section section--rule"><div class="wrap">'
             '<div class="eyebrow">Praise</div><div class="grid g2 mt4">%s</div></div></section>' % cards)
 
-def bulk(title):
+def bulk(title, kit=None):
     """Bulk / institutional order block, plus the route to the press desk — a reviewer
     landing straight on a book page should not have to go hunting for it.
     mail() is called here, not embedded as text: an f-string does not evaluate
@@ -293,8 +293,10 @@ def bulk(title):
           <p>Twenty-five copies or two thousand. Same address either way.</p>
           {link}
         </div>
-        <p class="small mt3">Writing about this book? Review and examination copies, excerpts and
-          cover art are all handled at the <a href="/press/">press desk</a>.</p>
+        <p class="small mt3">Writing about this book? The
+          <a href="{kit or '/press/'}">{'press kit for this title' if kit else 'press desk'}</a>
+          has descriptions at three lengths, the author bios, interview questions and asset
+          requests.</p>
       </div>
     </div>
   </div>
@@ -384,20 +386,20 @@ def cover(title_lines, sub, gold=False):
 
 BOOKS = [
     dict(slug="exceptional-by-design", t="Exceptional by Design", os="Installs the Exceptional Life OS",
-         authors="Chris Seegers and Tara Seegers", status="out", statlbl="Published",
-         yr="2026",
+         authors="Chris Seegers and Tara Seegers", status="soon",
+         statlbl="Q1 2027", yr="2027", when="Anticipated Q1 2027",
          blurb="The blueprint for designing a life on purpose &mdash; eight pillars, four phases, "
                "and the assessment that tells you where you actually stand.",
          cov=["EXCEPTIONAL","BY DESIGN"]),
     dict(slug="exceptional-systems", t="Exceptional Systems", os="Installs the Exceptional Business OS",
-         authors="Chris Seegers and Marcus Seegers", status="soon", statlbl="Forthcoming &middot; 2027",
-         yr="2027",
+         authors="Chris Seegers and Marcus Seegers", status="soon", statlbl="Q4 2027",
+         yr="2027", when="Anticipated Q4 2027",
          blurb="A business that runs on documentation and discipline instead of heroic effort "
                "and tribal knowledge. Dream it, build it, optimize it, monetize it.",
          cov=["EXCEPTIONAL","SYSTEMS"]),
     dict(slug="exceptional-stewardship", t="Exceptional Stewardship", os="Installs the Exceptional Wealth OS",
-         authors="Chris Seegers", status="soon", statlbl="In development",
-         yr="2027",
+         authors="Chris Seegers", status="soon", statlbl="Q2 2028",
+         yr="2028", when="Anticipated Q2 2028",
          blurb="The third book completes the trilogy: what happens to money once it arrives, "
                "how it works, and how it leaves well.",
          cov=["EXCEPTIONAL","STEWARDSHIP"]),
@@ -423,8 +425,199 @@ def bookcard(b, base="/books/"):
       <div class="meta">{b['authors']}</div>
       <p>{b['blurb']}</p>
       <div class="mt1">{pill}</div>
+      <div class="meta">{b.get('when','')}</div>
       <span class="go">Read more &rsaquo;</span>
     </a>"""
+
+# ══════════════════════════════════════════════════════════════════════════
+# PER-BOOK PRESS KITS  —  /books/<slug>/press/
+#
+# The site already had a page per book. What it did not have is what a journalist
+# does when they land on one. These pages carry the descriptions at three lengths
+# for lifting verbatim, the ratified author bios, cold-read interview questions,
+# and — critically — the live capital figure.
+#
+# That last one is the point. Chris_Seegers_Author_Bio_Standard.md (3 Sept) killed
+# two figures still sitting in print: "over a Billion" in the Exceptional by Design
+# manuscript and "over $550 million" in Selling Main Street. A reporter with no
+# other source will reprint whichever they find. This page is where they find the
+# right one first.
+#
+# Only two kits exist. Exceptional Stewardship has no manuscript, and a thin press
+# page ranks worse than no page at all. It gets one when there is something in it.
+# ══════════════════════════════════════════════════════════════════════════
+
+BIO_CHRIS_LONG = """Chris Seegers is a business owner with a long track record of starting and
+buying companies and building them into successful, self-governed entities. He founded the
+Exceptional Companies family office, is an active owner in many different businesses, and has
+served on leadership teams that have raised and deployed over $750 million in investor capital.
+Chris is a &ldquo;capitalist missionary,&rdquo; and his heart is activating and equipping others
+to live exceptional lives.</p><p>Chris is a follower of Jesus, husband to his best friend Tara,
+and father to Jed, Chisum, and Lillian. He is a sibling to seven, and loves deep, authentic
+friendships and old books. Chris and his family live in Colorado Springs surrounded by mountains
+and amazing people."""
+
+BIO_CHRIS_SHORT = """Chris Seegers founded the Exceptional Companies family office and has served
+on leadership teams that raised and deployed over $750 million in investor capital. A
+self-described &ldquo;capitalist missionary,&rdquo; he lives in Colorado Springs with his wife and
+co-author Tara and their three children."""
+
+BIO_TARA_LONG = """Tara Seegers is a nationally recognized wealth advisor and Certified Financial
+Planner&trade; who serves multi-generational families and business owners across the United
+States. Named to Forbes&rsquo; &ldquo;Top Women Wealth Advisors Best-In-State&rdquo; list, Tara
+specializes in creating clarity from complexity and helping families build legacies that last for
+generations.</p><p>Tara is a follower of Jesus, wife to Chris, and mother to Jed, Chisum, and
+Lillian. She believes exceptional wealth planning starts with understanding what truly matters.
+Tara and her family live in Colorado Springs, where they&rsquo;re designing an exceptional life
+together."""
+
+BIO_MARCUS = """Marcus Seegers is co-author of <i>Exceptional Systems</i> and co-leader of the
+Exceptional Companies ecosystem. He is a Co-Founder of Exceptional Business Advisors, where he
+owns operations and systems &mdash; running, in a real company with real people in it, the
+operating system this book documents."""
+
+def presskit(slug, title, subtitle, authors, when, d25, d50, d150, contains, questions,
+             bios, prev_url, prev_label):
+    # mail() is called here and its output interpolated. An f-string does not evaluate
+    # placeholders inside a value it interpolates — this is the second time that bit.
+    t_enc = title.replace(" ", "%20")
+    cta_press = mail("Request assets or an interview",
+                     subject="Press%20%E2%80%94%20" + t_enc, cls="btn")
+    cta_assets = mail("Request assets",
+                      subject="Asset%20request%20%E2%80%94%20" + t_enc, cls="btn")
+    addr = mail()
+    ask = "".join('<div class="factrow"><span class="k">%02d</span><span>%s</span></div>'
+                  % (i + 1, q) for i, q in enumerate(questions))
+    cont = "".join('<div class="factrow"><span class="k">%s</span><span>%s</span></div>' % (k, v)
+                   for k, v in contains)
+    biohtml = "".join(
+        '<div class="mt4"><div class="eyebrow">%s &mdash; %s</div>'
+        '<div class="body mt2"><p>%s</p></div></div>' % (n, l, t) for n, l, t in bios)
+    return f"""
+<section class="pagehead">
+  <div class="energy" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="eyebrow">Press kit</div>
+    <h1 class="display mt2">{title}</h1>
+    <hr class="accentrule wide mt3">
+    <p class="lead mt3">Everything a writer, producer or bookseller needs, in a form you can lift
+      without calling us first. If you need something that is not here, ask &mdash; we answer the
+      same day.</p>
+    <div class="btnrow mt4">
+      {cta_press}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <div class="eyebrow">At a glance</div>
+        <h2 class="h2 mt2">The facts</h2>
+        <hr class="accentrule mt3">
+        <div class="mt3">
+          <div class="factrow"><span class="k">Title</span><span>{title}</span></div>
+          <div class="factrow"><span class="k">Subtitle</span><span>{subtitle}</span></div>
+          <div class="factrow"><span class="k">Authors</span><span>{authors}</span></div>
+          <div class="factrow"><span class="k">Publisher</span><span>Exceptional Media, Colorado Springs</span></div>
+          <div class="factrow"><span class="k">Publication</span><span>{when}</span></div>
+          <div class="factrow"><span class="k">ISBN</span><span>On request &mdash; assigned closer to publication</span></div>
+          <div class="factrow"><span class="k">Formats</span><span>On request</span></div>
+          <div class="factrow"><span class="k">Review copies</span><span>Available on request ahead of publication</span></div>
+          <div class="factrow"><span class="k">Contact</span><span>{addr}</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="card card--dark">
+          <div class="kicker">Please read this before you write</div>
+          <div class="title">One capital figure is live. Two are dead.</div>
+          <p>The only figure to use is <b style="font-weight:500">over $750 million in investor
+            capital</b>, raised and deployed by leadership teams Chris served on.</p>
+          <p>Two older figures are still sitting in print and in retail listings and should not be
+            repeated: <span class="dead-figure"><i>&ldquo;over a Billion dollars&rdquo;</i> and
+            <i>&ldquo;over $550 million&rdquo;</i></span>. Both are superseded. We are correcting the
+            listings; if you found one of them, it came from there.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--navy">
+  <div class="wrap">
+    <div class="eyebrow">Lift these verbatim</div>
+    <h2 class="h1 mt2">Descriptions,<br>three lengths.</h2>
+    <hr class="accentrule mt3">
+    <div class="grid g3 grid--top mt4">
+      <div class="card card--dark"><div class="kicker">25 words</div><p>{d25}</p></div>
+      <div class="card card--dark"><div class="kicker">50 words</div><p>{d50}</p></div>
+      <div class="card card--dark"><div class="kicker">150 words</div><p>{d150}</p></div>
+    </div>
+    <p class="small mt3">No attribution needed. These are written to be used as they are.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <div class="eyebrow">Get it right</div>
+        <h2 class="h2 mt2">What is actually in the book</h2>
+        <hr class="accentrule mt3">
+        <div class="mt3">{cont}</div>
+        <p class="small mt3">The full table of contents is on the
+          <a href="{prev_url}">{prev_label}</a>.</p>
+      </div>
+      <div>
+        <div class="eyebrow">For hosts and interviewers</div>
+        <h2 class="h2 mt2">Five questions you can ask cold</h2>
+        <hr class="accentrule mt3">
+        <div class="mt3">{ask}</div>
+        <p class="small mt3">Use them, change them, ignore them. They are here so you do not have
+          to read the book to run a good interview &mdash; though we hope you do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--rule">
+  <div class="wrap">
+    <div class="eyebrow">Author biographies</div>
+    <h2 class="h2 mt2">Set these as written</h2>
+    <hr class="accentrule mt3">
+    <p class="lead mt3">Ratified September 2026. They supersede the &ldquo;About the
+      Authors&rdquo; copy in any earlier manuscript or retail listing.</p>
+    {biohtml}
+  </div>
+</section>
+
+<section class="section section--deep">
+  <div class="wrap">
+    <div class="split">
+      <div class="body">
+        <div class="eyebrow">Assets</div>
+        <h2 class="h2 mt2">Covers, photography, logos</h2>
+        <hr class="accentrule mt3">
+        <p class="mt3" style="color:rgba(255,255,255,.86)">Jacket art, author photography and the
+          Exceptional wordmark are all available in print resolution on request. Marks are supplied
+          as vector and used solid black or solid white only &mdash; never recoloured, boxed,
+          stretched, or pulled from a web page.</p>
+      </div>
+      <div>
+        <div class="btnrow">
+          {cta_assets}
+          <a class="btn btn--ghost" href="{prev_url}">The book page</a>
+        </div>
+        <p class="small mt3" style="color:rgba(255,255,255,.7)">Covering the trilogy as a whole?
+          The <a href="/press/">press desk</a> handles rights, permissions and excerpts across
+          every title.</p>
+      </div>
+    </div>
+  </div>
+</section>
+"""
+
 
 # ══════════════════════════════════════════════════════════════════════════
 # HOME
@@ -487,6 +680,8 @@ home = f"""
     <p class="lead mt3">Most owners are handed a plan for one of these and left to improvise the
       other two. The trilogy treats life, business, and wealth as one design problem, because
       that is how they actually behave.</p>
+    <p class="lead mt2"><i>Exceptional by Design</i> is anticipated in Q1 2027,
+      <i>Exceptional Systems</i> in Q4 2027, and <i>Exceptional Stewardship</i> in Q2 2028.</p>
     <div class="grid g3 mt4">
       {bookcard(BOOKS[0])}
       {bookcard(BOOKS[1])}
@@ -632,7 +827,8 @@ home = f"""
 """
 write("/", "Exceptional Media — Books, Podcasts &amp; the EXCEPTIONAL Magazine",
       "Exceptional Media is the publishing arm of Exceptional Companies: the Life, Business and "
-      "Wealth OS trilogy, the Main Street books, two weekly podcasts, and EXCEPTIONAL magazine.",
+      "Wealth OS trilogy launching 2027, the Main Street books, two weekly podcasts, and "
+      "EXCEPTIONAL magazine.",
       home, schema=graph(
         ORG,
         {"@type": "WebSite", "@id": SITE + "/#site", "url": SITE, "name": "Exceptional Media",
@@ -652,6 +848,9 @@ books = pagehead("Books", "The catalogue.",
     <p class="lead mt3">The tagline is not decoration &mdash; it is the table of contents. Each
       book installs the operating system for one of the three, and each is written so it stands
       alone if that is the only one you need right now.</p>
+    <p class="lead mt2">Anticipated: <i>Exceptional by Design</i> Q1 2027,
+      <i>Exceptional Systems</i> Q4 2027, <i>Exceptional Stewardship</i> Q2 2028. Chapter four of
+      the first is already <a href="/books/exceptional-by-design/excerpt/">up in full</a>.</p>
     <div class="grid g3 mt4">
       {"".join(bookcard(b) for b in BOOKS)}
     </div>
@@ -713,7 +912,7 @@ write("/books/", "Books — Exceptional Media",
         "@type": "CollectionPage", "name": "Books", "url": SITE + "/books/",
         "isPartOf": {"@id": SITE + "/#site"},
         "hasPart": [
-          book_ld("Exceptional by Design", [CHRIS, TARA], "/books/exceptional-by-design/", "2026"),
+          book_ld("Exceptional by Design", [CHRIS, TARA], "/books/exceptional-by-design/"),
           book_ld("Exceptional Systems", [CHRIS, MARCUS], "/books/exceptional-systems/"),
           book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/"),
           book_ld("Selling Main Street", [CHRIS], "/books/", "2024",
@@ -749,7 +948,7 @@ ebd = f"""
     <p class="lead mt3"><b style="font-weight:400">Building Your Dream Life.</b> Chris Seegers
       and Tara Seegers on designing a life on purpose &mdash; eight pillars, four phases, and an
       assessment that tells you where you actually stand.</p>
-    <div class="mt3"><span class="pill">Published &middot; 2026</span></div>
+    <div class="mt3"><span class="pill pill--soon">Anticipated Q1 2027</span></div>
   </div>
 </section>
 
@@ -774,6 +973,8 @@ ebd = f"""
           <div class="factrow"><span class="k">Authors</span><span>Chris Seegers and Tara Seegers</span></div>
           <div class="factrow"><span class="k">Position</span><span>Book one of three</span></div>
           <div class="factrow"><span class="k">System</span><span>The Exceptional Life OS</span></div>
+          <div class="factrow"><span class="k">Publication</span><span>In production. Anticipated Q1 2027.</span></div>
+          <div class="factrow"><span class="k">For media</span><span><a href="/books/exceptional-by-design/press/">Press kit</a> &mdash; descriptions, bios, interview questions</span></div>
           <div class="factrow"><span class="k">Structure</span><span>17 chapters &middot; 4 phases &middot; 8 pillars</span></div>
           <div class="factrow"><span class="k">Companion</span><span><a href="https://exceptional-os.com" rel="noopener" target="_blank">Exceptional Life OS</a> &mdash; the assessment and the digital platform</span></div>
           <div class="factrow"><span class="k">Publisher</span><span>Exceptional Media</span></div>
@@ -782,6 +983,9 @@ ebd = f"""
       <div>
         {cover(["EXCEPTIONAL","BY DESIGN"], "The Exceptional Life OS", gold=True)}
         <div class="btnrow mt3">
+          {mail("Send me launch updates", subject="Exceptional%20by%20Design%20%E2%80%94%20launch%20updates", cls="btn")}
+        </div>
+        <div class="btnrow mt2">
           <a class="btn btn--ghost" href="https://exceptional-os.com" rel="noopener" target="_blank">Take the assessment</a>
         </div>
         <p class="small mt2">Retail links go live at launch.</p>
@@ -859,7 +1063,7 @@ ebd = f"""
   <div class="wrap">
     <div class="split">
       <div class="body">
-        <div class="eyebrow">Read before you buy</div>
+        <div class="eyebrow">Read it before it&rsquo;s out</div>
         <h2 class="h1 mt2">Chapter four,<br>in full.</h2>
         <hr class="accentrule mt3">
         <p class="mt3">&ldquo;Create Your Life Vision&rdquo; is the chapter the rest of the book
@@ -868,6 +1072,7 @@ ebd = f"""
         <p>It is the exercise Chris and Tara ran on themselves, in a lonely spot in rural
           Colorado, with a journal and no phone. We put the whole chapter up rather than a
           teaser, because a sample that stops at the interesting part is not a sample.</p>
+        <p>The book is anticipated in the first quarter of 2027. This chapter is available now.</p>
         <div class="btnrow mt4">
           <a class="btn" href="/books/exceptional-by-design/excerpt/">Read chapter four</a>
         </div>
@@ -882,7 +1087,7 @@ ebd = f"""
 </section>
 
 {endorsements("exceptional-by-design")}
-{bulk("Exceptional by Design")}
+{bulk("Exceptional by Design", kit="/books/exceptional-by-design/press/")}
 
 <section class="section">
   <div class="wrap">
@@ -897,12 +1102,12 @@ ebd = f"""
 """
 write("/books/exceptional-by-design/", "Exceptional by Design — Book One of the Exceptional Trilogy",
       "Chris and Tara Seegers on designing a life on purpose: eight pillars, four phases, and the "
-      "Exceptional Design Assessment. Book one — it installs the Exceptional Life OS.", ebd, depth=2,
+      "Exceptional Design Assessment. Book one of the trilogy, launching Q1 2027.", ebd, depth=2,
       schema=graph(
         crumbs(("Home", "/"), ("Books", "/books/"),
                ("Exceptional by Design", "/books/exceptional-by-design/")),
         book_ld("Exceptional by Design: Building Your Dream Life", [CHRIS, TARA],
-                "/books/exceptional-by-design/", "2026",
+                "/books/exceptional-by-design/",
                 about=["Personal development", "Goal setting", "Life planning", "Faith and work"])))
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -1010,6 +1215,7 @@ exc = f"""
       <div>
         <div class="btnrow">
           <a class="btn" href="https://exceptional-os.com" rel="noopener" target="_blank">Open the Life OS</a>
+          {mail("Send me launch updates", subject="Exceptional%20by%20Design%20%E2%80%94%20launch%20updates", cls="btn btn--ghost")}
           <a class="btn btn--ghost" href="/books/exceptional-by-design/">Back to the book</a>
         </div>
       </div>
@@ -1020,7 +1226,8 @@ exc = f"""
 write("/books/exceptional-by-design/excerpt/",
       "Create Your Life Vision — Chapter Four, Read in Full",
       "The complete fourth chapter of Exceptional by Design by Chris and Tara Seegers: getting "
-      "quiet, and the ten-year vision exercise, reproduced in full.", exc, depth=3,
+      "quiet, and the ten-year vision exercise, reproduced in full, ahead of the Q1 2027 launch.",
+      exc, depth=3,
       schema=graph(
         crumbs(("Home", "/"), ("Books", "/books/"),
                ("Exceptional by Design", "/books/exceptional-by-design/"),
@@ -1052,7 +1259,7 @@ sysbk = f"""
     <hr class="accentrule wide mt3">
     <p class="lead mt3">Chris Seegers and Marcus Seegers on building a business that runs on
       documentation and discipline instead of heroic effort and tribal knowledge.</p>
-    <div class="mt3"><span class="pill pill--soon">Forthcoming &middot; 2027</span></div>
+    <div class="mt3"><span class="pill pill--soon">Anticipated Q4 2027</span></div>
   </div>
 </section>
 
@@ -1084,7 +1291,8 @@ sysbk = f"""
           <div class="factrow"><span class="k">Position</span><span>Book two of three</span></div>
           <div class="factrow"><span class="k">System</span><span>The Exceptional Business OS</span></div>
           <div class="factrow"><span class="k">Structure</span><span>Four phases, run as a quarterly and annual loop</span></div>
-          <div class="factrow"><span class="k">Status</span><span>Manuscript complete and in edit. Publication 2027.</span></div>
+          <div class="factrow"><span class="k">Publication</span><span>Manuscript complete, in edit. Anticipated Q4 2027.</span></div>
+          <div class="factrow"><span class="k">For media</span><span><a href="/books/exceptional-systems/press/">Press kit</a> &mdash; descriptions, bios, interview questions</span></div>
           <div class="factrow"><span class="k">Publisher</span><span>Exceptional Media</span></div>
         </div>
 
@@ -1162,7 +1370,7 @@ sysbk = f"""
 </section>
 
 {endorsements("exceptional-systems")}
-{bulk("Exceptional Systems")}
+{bulk("Exceptional Systems", kit="/books/exceptional-systems/press/")}
 
 <section class="section">
   <div class="wrap">
@@ -1197,7 +1405,7 @@ stw = f"""
     <hr class="accentrule wide mt3">
     <p class="lead mt3">The book that completes the trilogy &mdash; what happens to money once it
       arrives, how it works, and how it leaves well.</p>
-    <div class="mt3"><span class="pill pill--soon">In development</span></div>
+    <div class="mt3"><span class="pill pill--soon">Anticipated Q2 2028</span></div>
   </div>
 </section>
 
@@ -1227,7 +1435,7 @@ stw = f"""
           <div class="factrow"><span class="k">Author</span><span>Chris Seegers</span></div>
           <div class="factrow"><span class="k">Position</span><span>Book three of three</span></div>
           <div class="factrow"><span class="k">System</span><span>The Exceptional Wealth OS</span></div>
-          <div class="factrow"><span class="k">Status</span><span>In development</span></div>
+          <div class="factrow"><span class="k">Publication</span><span>In development. Anticipated Q2 2028.</span></div>
           <div class="factrow"><span class="k">Publisher</span><span>Exceptional Media</span></div>
         </div>
 
@@ -1284,6 +1492,139 @@ write("/books/exceptional-stewardship/", "Exceptional Stewardship — Book Three
                ("Exceptional Stewardship", "/books/exceptional-stewardship/")),
         book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/",
                 about=["Wealth stewardship", "Family governance", "Legacy planning"])))
+
+# ── Press kit · Exceptional by Design ────────────────────────────────────
+write("/books/exceptional-by-design/press/",
+      "Press Kit — Exceptional by Design",
+      "Descriptions, author biographies, interview questions and asset requests for "
+      "Exceptional by Design by Chris and Tara Seegers, anticipated Q1 2027.",
+      presskit(
+        slug="exceptional-by-design",
+        title="Exceptional by Design",
+        subtitle="Building Your Dream Life",
+        authors="Chris Seegers and Tara Seegers",
+        when="Anticipated Q1 2027",
+        d25="Chris and Tara Seegers on designing a life on purpose &mdash; eight pillars, four "
+            "phases, and an assessment that shows you where you actually stand.",
+        d50="Most people design their business and improvise their life. <i>Exceptional by "
+            "Design</i> treats a whole life the way an operator treats a company: in pillars you "
+            "can name, phases you can run, and disciplines you can measure. Seventeen chapters, "
+            "written to be worked rather than read.",
+        d150="Most people design their business and improvise their life. In <i>Exceptional by "
+             "Design</i>, Chris and Tara Seegers hand over the framework they built for "
+             "themselves after a year they did not plan and would not repeat &mdash; and then "
+             "used to move their family from Texas to Colorado, restructure their businesses, and "
+             "build the life they had been describing to each other for a decade.<br><br>"
+             "The book runs on eight pillars &mdash; Faith, Family, Fitness, Finances, "
+             "Fulfillment, Fun, Freedom and Business &mdash; across four phases: Dream It, Build "
+             "It, Optimize It, Live It. Seventeen chapters, each one an exercise rather than an "
+             "argument. It is written to be worked, not read.<br><br>"
+             "Chris Seegers founded the Exceptional Companies family office. Tara Seegers is a "
+             "Certified Financial Planner&trade; named to Forbes&rsquo; Top Women Wealth Advisors "
+             "Best-In-State list. They live in Colorado Springs with their three children.",
+        contains=[
+          ("Eight pillars", "Faith &middot; Family &middot; Fitness &middot; Finances &middot; "
+                            "Fulfillment &middot; Fun &middot; Freedom &middot; Business"),
+          ("Four phases", "Dream It &middot; Build It &middot; Optimize It &middot; Live It"),
+          ("Length", "Seventeen chapters, plus appendices"),
+          ("Core exercises", "The ten-year vision exercise &middot; the 30-Day Kickstart Guide"),
+          ("Signature idea", "&ldquo;Fence to the support post&rdquo; &mdash; break any "
+                             "impossible task into the next immediate action"),
+          ("Assessment", "The Exceptional Design Assessment, at exceptional-os.com"),
+          ("Companion", "The Exceptional Life OS &mdash; the digital system the book maps to"),
+        ],
+        questions=[
+          "The book opens with a year you did not plan. What did that year teach you that no "
+          "business lesson had?",
+          "You say most people design their business and improvise their life. Where does that "
+          "usually show up first?",
+          "Eight pillars is a lot to hold at once. What happens to someone who is exceptional in "
+          "six and neglecting two?",
+          "&ldquo;Fence to the support post&rdquo; came from building two miles of fence by hand "
+          "at twenty-four. How does that translate for someone staring at a ten-year vision?",
+          "You wrote this with your wife. What did the two of you disagree about?",
+        ],
+        bios=[("Chris Seegers", "long form, 124 words", BIO_CHRIS_LONG),
+              ("Chris Seegers", "short form, 50 words", BIO_CHRIS_SHORT),
+              ("Tara Seegers", "long form", BIO_TARA_LONG)],
+        prev_url="/books/exceptional-by-design/", prev_label="book page"),
+      depth=3,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional by Design", "/books/exceptional-by-design/"),
+               ("Press kit", "/books/exceptional-by-design/press/")),
+        {"@type": "WebPage", "name": "Press Kit — Exceptional by Design",
+         "url": SITE + "/books/exceptional-by-design/press/",
+         "publisher": {"@id": SITE + "/#org"},
+         "about": {"@type": "Book", "name": "Exceptional by Design: Building Your Dream Life",
+                   "author": [CHRIS, TARA], "url": SITE + "/books/exceptional-by-design/"}}))
+
+# ── Press kit · Exceptional Systems ──────────────────────────────────────
+write("/books/exceptional-systems/press/",
+      "Press Kit — Exceptional Systems",
+      "Descriptions, author biographies, interview questions and asset requests for "
+      "Exceptional Systems by Chris and Marcus Seegers, anticipated Q4 2027.",
+      presskit(
+        slug="exceptional-systems",
+        title="Exceptional Systems",
+        subtitle="The Business OS",
+        authors="Chris Seegers and Marcus Seegers",
+        when="Anticipated Q4 2027",
+        d25="Chris and Marcus Seegers on building a business that runs on documentation and "
+            "discipline instead of heroic effort and tribal knowledge.",
+        d50="The businesses that consume the life they were supposed to fund all fail the same "
+            "way: the owner is the system. <i>Exceptional Systems</i> is the fix &mdash; four "
+            "phases run as a quarterly loop, ending in the one most operating systems leave out. "
+            "Monetize It.",
+        d150="Every business owner who builds something real with their hands, their talent and "
+             "their years deserves better than running out of time holding it. The companies that "
+             "consume the very life they were supposed to fund all fail the same way: the owner "
+             "<i>is</i> the system. Every decision routes through one person, every process lives "
+             "in one head, and the company cannot be handed to anyone &mdash; not a buyer, not a "
+             "successor, not a Tuesday off.<br><br>"
+             "<i>Exceptional Systems</i> is the fix, written as a loop you run rather than a "
+             "theory you agree with: Dream It, Build It, Optimize It, Monetize It, cycled "
+             "quarterly and annually, each pass compounding on the last. It ends with the phase "
+             "most operating systems skip &mdash; the deliberate harvest, whether that is a sale, "
+             "a transition or a restructure.<br><br>"
+             "Chris Seegers founded the Exceptional Companies family office. Marcus Seegers is a "
+             "Co-Founder of Exceptional Business Advisors, where he owns operations and systems.",
+        contains=[
+          ("Four phases", "Dream It &middot; Build It &middot; Optimize It &middot; Monetize It"),
+          ("Length", "Fifteen chapters across four parts"),
+          ("Phase one", "Guiding Principles, Purpose Statement, Long-Term Goal, the Story"),
+          ("Phase two", "Culture Scorecard, the Two-Trainer System, meeting rhythm, the Weekly "
+                        "Scorecard across Impact, Growth and Operational"),
+          ("Phase three", "The Action System, the Playbook, a sixty-day training pipeline"),
+          ("Phase four", "Exit valuation, the personal plan, the wealth plan, exit and transition"),
+          ("Core principle", "People, Process, Profit &mdash; in that order, always"),
+          ("Closing challenge", "The 90-Day Challenge &mdash; one full quarterly loop"),
+        ],
+        questions=[
+          "You say the owner <i>is</i> the system in most struggling companies. What is the first "
+          "sign of that from the outside?",
+          "People, Process, Profit. What actually breaks when someone reverses the order?",
+          "Part four is Monetize It, and most operating systems stop before that. Why do they, and "
+          "why did you not?",
+          "You wrote this with your brother, who runs the operations side. What does he see that "
+          "you do not?",
+          "The book ends with homework, not inspiration. What happens in the first ninety days?",
+        ],
+        bios=[("Chris Seegers", "long form, 124 words", BIO_CHRIS_LONG),
+              ("Chris Seegers", "short form, 50 words", BIO_CHRIS_SHORT),
+              ("Marcus Seegers", "short form", BIO_MARCUS)],
+        prev_url="/books/exceptional-systems/", prev_label="book page"),
+      depth=3,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional Systems", "/books/exceptional-systems/"),
+               ("Press kit", "/books/exceptional-systems/press/")),
+        {"@type": "WebPage", "name": "Press Kit — Exceptional Systems",
+         "url": SITE + "/books/exceptional-systems/press/",
+         "publisher": {"@id": SITE + "/#org"},
+         "about": {"@type": "Book", "name": "Exceptional Systems",
+                   "author": [CHRIS, MARCUS], "url": SITE + "/books/exceptional-systems/"}}))
+
 
 # ══════════════════════════════════════════════════════════════════════════
 # PODCASTS
@@ -1539,6 +1880,9 @@ press = pagehead("Press desk", "Rights &amp;<br>permissions.",
           and author photography, bulk and institutional orders, and interviews about the books or
           the magazine &mdash; exits, succession, family governance, or how a buy-sell actually
           gets funded.</p>
+        <p><b style="font-weight:500">Working on one title?</b> Go straight to its kit:
+          <a href="/books/exceptional-by-design/press/">Exceptional by Design</a> &middot;
+          <a href="/books/exceptional-systems/press/">Exceptional Systems</a>.</p>
         {mail("Email the press desk &rsaquo;", subject="Press%20%E2%80%94%20Exceptional%20Media", cls="go")}
       </div>
       <a class="card" href="https://chrisseegers.com/press" rel="noopener" target="_blank">
@@ -1656,8 +2000,8 @@ about = pagehead("About", "Why we<br>publish.",
         <p>Chris guides Main Street owners through the biggest transaction of their lives. He has
           been the seller, the buyer and the advisor on both sides of the table. He runs a family
           office of operating businesses, wrote <i>Selling Main Street</i> and <i>Buying Main
-          Street</i>, co-authored <i>Exceptional by Design</i> with his wife Tara, and in 2015 he
-          and Tara bought the town of Hillside, Colorado.</p>
+          Street</i>, co-wrote <i>Exceptional by Design</i> with his wife Tara, and in 2015 he and
+          Tara bought the town of Hillside, Colorado.</p>
         <a class="go" href="https://chrisseegers.com" rel="noopener" target="_blank">chrisseegers.com &rsaquo;</a>
       </div>
       <div class="card card--dark">
@@ -1673,7 +2017,7 @@ about = pagehead("About", "Why we<br>publish.",
       <div class="card card--dark">
         <div class="kicker">Co-author &middot; Exceptional by Design</div>
         <div class="title">Tara Seegers</div>
-        <p>Tara is co-author of <i>Exceptional by Design</i> and co-leader of the ecosystem. She
+        <p>Tara co-wrote <i>Exceptional by Design</i> and co-leads the ecosystem. She
           had the vision for Hillside and ran it &mdash; within three years the town was
           immaculate, profitable and growing, with people driving in from all over for events,
           milestones and the stargazing.</p>
@@ -1780,7 +2124,9 @@ nf = pagehead("404", "Not here.",
 print("  wrote 404.html")
 
 PAGES = (["/", "/books/", "/books/exceptional-by-design/",
-          "/books/exceptional-by-design/excerpt/", "/books/exceptional-systems/",
+          "/books/exceptional-by-design/excerpt/",
+          "/books/exceptional-by-design/press/", "/books/exceptional-systems/",
+          "/books/exceptional-systems/press/",
           "/books/exceptional-stewardship/", "/podcasts/"]
          + (["/magazine/"] if MAGAZINE_PROMOTED else [])
          + ["/press/", "/about/"])

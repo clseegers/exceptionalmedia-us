@@ -315,3 +315,8 @@ a.card:hover{border-color:var(--structure);border-left-color:var(--accent)}
 }
 .skip:focus{left:0;outline:3px solid var(--ink);outline-offset:-3px}
 main{display:block}
+.dead-figure{text-decoration:line-through;text-decoration-thickness:1px;opacity:.85}
+/* Let each card take its own height — a 25-word card stretched to a 150-word card is
+   four fifths empty. Aligned tops, ragged bottoms, which is the honest shape here. */
+.grid--top{align-items:start}
+.grid--top .card{height:auto}

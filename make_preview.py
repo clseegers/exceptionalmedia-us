@@ -7,7 +7,9 @@ css = (root/'assets/exco-media.css').read_text()
 PAGES = [("/", "home"), ("/books/", "books"),
          ("/books/exceptional-by-design/", "books-exceptional-by-design"),
          ("/books/exceptional-by-design/excerpt/", "books-exceptional-by-design-excerpt"),
+         ("/books/exceptional-by-design/press/", "books-exceptional-by-design-press"),
          ("/books/exceptional-systems/", "books-exceptional-systems"),
+         ("/books/exceptional-systems/press/", "books-exceptional-systems-press"),
          ("/books/exceptional-stewardship/", "books-exceptional-stewardship"),
          ("/podcasts/", "podcasts"), ("/magazine/", "magazine"),
          ("/press/", "press"), ("/about/", "about")]

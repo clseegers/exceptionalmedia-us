@@ -29,7 +29,11 @@ PROHIBITED = [
     r"#1 business podcast", r"hundreds of business exits", r"\bAllstate\b",
     r"132[,K]", r"212[,K]", r"\b58\+", r"\b85\+", r"prototype", r"lorem ipsum",
 ]
-bad = [(f.name, p) for f in FILES for p in PROHIBITED if re.search(p, f.read_text(), re.I)]
+# A superseded figure may be QUOTED inside <span class="dead-figure"> so a press kit can
+# tell a reporter which figure not to reprint. Everywhere else it is a failure.
+DEAD = re.compile(r'<span class="dead-figure">.*?</span>', re.S)
+bad = [(f.name, p) for f in FILES for p in PROHIBITED
+       if re.search(p, DEAD.sub("", f.read_text()), re.I)]
 check("no prohibited or superseded copy", bad)
 
 # 3 · the email address never appears literally (see README, email obfuscation)
@@ -102,7 +106,21 @@ check("JSON-LD parses", bad)
 bad = [(f.name, m) for f in FILES for m in re.findall(r"\{[a-z_]+\(.{0,60}", f.read_text())]
 check("no unevaluated template placeholders", bad)
 
-# 11 · canonical on every page
+# 11 · publication status. Only Selling Main Street (2024) and Buying Main Street (2025) are
+#      published. Multiple internal records wrongly say Exceptional by Design came out in
+#      April 2026 — Chris confirmed 5 Sept 2026 that it is in production for Q1 2027.
+#      This rule exists so that error cannot creep back in from those records.
+UNPUBLISHED = ["exceptional-by-design", "exceptional-systems", "exceptional-stewardship"]
+bad = []
+for f in FILES:
+    slug = f.parent.name
+    if slug in UNPUBLISHED or (f.parent.parent.name in UNPUBLISHED):
+        for m in re.findall(r'class="pill[^"]*">([^<]*)</span>', f.read_text()):
+            if "Published" in m:
+                bad.append((f.name, m))
+check("no trilogy title is labelled Published", bad)
+
+# 12 · canonical on every page
 bad = [f.name for f in FILES if 'rel="canonical"' not in f.read_text()]
 check("canonical on every page", bad)
 
