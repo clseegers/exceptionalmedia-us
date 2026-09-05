@@ -61,11 +61,48 @@ for label, pat in (("titles", r"<title>(.*?)</title>"),
         c[m.group(1)] += 1
     check(f"unique {label}", [k for k, v in c.items() if v > 1])
 
-# 7 · no unevaluated f-string placeholder leaked into the output
+# 7 · accessibility and semantics
+bad = [f.name for f in FILES if '<main id="main">' not in f.read_text()]
+check("every page has a <main> landmark", bad)
+bad = [f.name for f in FILES if 'class="skip"' not in f.read_text()]
+check("every page has a skip link", bad)
+bad = [(f.name, n) for f in FILES
+       for n in [len(re.findall(r"<h1[ >]", f.read_text()))] if n != 1]
+check("exactly one <h1> per page", bad)
+bad = [(f.name, t[:60]) for f in FILES
+       for t in re.findall(r"<img [^>]*>", f.read_text()) if "alt=" not in t]
+check("every <img> has alt text", bad)
+
+bad = []
+for f in FILES:
+    lv = [int(m) for m in re.findall(r"<h([1-6])[ >]", f.read_text())]
+    skips = [(lv[i - 1], lv[i]) for i in range(1, len(lv)) if lv[i] - lv[i - 1] > 1]
+    if skips:
+        bad.append((f.name, f"h{skips[0][0]} -> h{skips[0][1]}"))
+check("no skipped heading levels", bad)
+
+# 8 · social card + icons referenced everywhere
+for label, needle in (("og:image", 'property="og:image"'),
+                      ("favicon", 'rel="icon"'),
+                      ("og:url", 'property="og:url"')):
+    check(f"{label} on every page", [f.name for f in FILES if needle not in f.read_text()])
+
+# 9 · structured data parses, where present
+import json
+bad = []
+for f in FILES:
+    for blob in re.findall(r'<script type="application/ld\+json">(.*?)</script>', f.read_text(), re.S):
+        try:
+            json.loads(blob)
+        except Exception as e:
+            bad.append((f.name, str(e)[:60]))
+check("JSON-LD parses", bad)
+
+# 10 · no unevaluated f-string placeholder leaked into the output
 bad = [(f.name, m) for f in FILES for m in re.findall(r"\{[a-z_]+\(.{0,60}", f.read_text())]
 check("no unevaluated template placeholders", bad)
 
-# 8 · canonical on every page
+# 11 · canonical on every page
 bad = [f.name for f in FILES if 'rel="canonical"' not in f.read_text()]
 check("canonical on every page", bad)
 

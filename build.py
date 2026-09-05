@@ -30,8 +30,14 @@ NAV = ([("/books/", "Books"), ("/podcasts/", "Podcasts")]
 
 MAG_FOOT = '<a href="/magazine/">EXCEPTIONAL magazine</a>' if MAGAZINE_PROMOTED else ""
 
-def head(title, desc, path, depth):
+def head(title, desc, path, depth, schema=None):
     a = "../" * depth if depth else ""
+    ld = ""
+    if schema:
+        import json as _json
+        ld = ('\n<script type="application/ld+json">'
+              + _json.dumps(schema, ensure_ascii=False, separators=(",", ":"))
+              + "</script>")
     nav = "\n".join(
         '      <a href="%s"%s>%s</a>' % (h, ' aria-current="page"' if h == path or (path.startswith(h) and h != "/") else "", t)
         for h, t in NAV)
@@ -48,13 +54,23 @@ def head(title, desc, path, depth):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{SITE}{path}">
-<meta name="twitter:card" content="summary_large_image">{"" if (MAGAZINE_PROMOTED or path != "/magazine/") else chr(10) + "<!-- Unpromoted until the EXCEPTIONAL blockers clear. See MAGAZINE_PROMOTED in build.py. -->" + chr(10) + chr(60) + "meta name=" + chr(34) + "robots" + chr(34) + " content=" + chr(34) + "noindex, follow" + chr(34) + chr(62)}
+<meta property="og:image" content="{SITE}/assets/og-exceptional-media.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Exceptional Media — Designed for exceptional. Life. Business. Wealth.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{SITE}/assets/og-exceptional-media.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">{"" if (MAGAZINE_PROMOTED or path != "/magazine/") else chr(10) + "<!-- Unpromoted until the EXCEPTIONAL blockers clear. See MAGAZINE_PROMOTED in build.py. -->" + chr(10) + chr(60) + "meta name=" + chr(34) + "robots" + chr(34) + " content=" + chr(34) + "noindex, follow" + chr(34) + chr(62)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
-<link rel="stylesheet" href="/assets/exco-media.css">
+<link rel="stylesheet" href="/assets/exco-media.css">{ld}
 </head>
 <body>
+
+<a class="skip" href="#main">Skip to content</a>
 
 <header class="masthead">
   <div class="bar"></div>
@@ -70,9 +86,13 @@ def head(title, desc, path, depth):
     </nav>
   </div>
 </header>
+
+<main id="main">
 """
 
 FOOT = f"""
+</main>
+
 <footer class="foot">
   <div class="energy" aria-hidden="true"></div>
   <div class="wrap">
@@ -85,14 +105,15 @@ FOOT = f"""
           insurance, wealth, and media.</p>
       </div>
       <div>
-        <h4>Publications</h4>
+        <h2>Publications</h2>
         <a href="/books/">Books</a>
+        <a href="/books/exceptional-by-design/excerpt/">Read chapter four</a>
         <a href="/podcasts/">Podcasts</a>
         {MAG_FOOT}
         <a href="/press/">Press &amp; rights</a>
       </div>
       <div>
-        <h4>The family</h4>
+        <h2>The family</h2>
         <a href="https://exceptionalcos.com" rel="noopener">Exceptional Companies</a>
         <a href="https://excoadvisors.com" rel="noopener">Exceptional Business Advisors</a>
         <a href="https://www.exceptionalwealth.us" rel="noopener">Exceptional Wealth &middot; Family Office</a>
@@ -100,7 +121,7 @@ FOOT = f"""
         <a href="https://chrisseegers.com" rel="noopener">Chris Seegers</a>
       </div>
       <div>
-        <h4>Listen &amp; read</h4>
+        <h2>Listen &amp; read</h2>
         <a href="https://www.youtube.com/@ExceptionalCompaniesPodcast" rel="noopener">Exceptional Companies Podcast</a>
         <a href="https://www.youtube.com/@ColoradoBusinessPodcast" rel="noopener">Colorado Business Podcast</a>
         <a href="https://exceptional-os.com" rel="noopener">Exceptional Life OS</a>
@@ -244,8 +265,10 @@ def endorsements(slug):
             '<div class="eyebrow">Praise</div><div class="grid g2 mt4">%s</div></div></section>' % cards)
 
 def bulk(title):
-    """Bulk / institutional order block. mail() is called here, not embedded as text —
-    an f-string does not evaluate placeholders in a value it interpolates."""
+    """Bulk / institutional order block, plus the route to the press desk — a reviewer
+    landing straight on a book page should not have to go hunting for it.
+    mail() is called here, not embedded as text: an f-string does not evaluate
+    placeholders in a value it interpolates."""
     link = mail("Start a bulk order",
                 subject="Bulk%20order%20%E2%80%94%20" + title.replace(" ", "%20"),
                 cls="go")
@@ -270,6 +293,8 @@ def bulk(title):
           <p>Twenty-five copies or two thousand. Same address either way.</p>
           {link}
         </div>
+        <p class="small mt3">Writing about this book? Review and examination copies, excerpts and
+          cover art are all handled at the <a href="/press/">press desk</a>.</p>
       </div>
     </div>
   </div>
@@ -277,10 +302,58 @@ def bulk(title):
 """
 
 
-def write(path, title, desc, body, depth=0):
+# ══════════════════════════════════════════════════════════════════════════
+# Structured data. Search and answer engines cannot infer that five books, two
+# shows and a magazine belong to one publisher from prose alone — the Sept audit's
+# finding for EBA was "attribution, not effort," and this is the fix for it here.
+# Only facts that already appear on the page go in. No figures, no counts.
+# ══════════════════════════════════════════════════════════════════════════
+
+ORG = {
+  "@type": "Organization",
+  "@id": SITE + "/#org",
+  "name": "Exceptional Media",
+  "url": SITE,
+  "description": "The publishing arm of Exceptional Companies — books, podcasts and "
+                 "EXCEPTIONAL magazine.",
+  "parentOrganization": {"@type": "Organization", "name": "Exceptional Companies",
+                         "url": "https://exceptionalcos.com"},
+  "address": {"@type": "PostalAddress", "addressLocality": "Colorado Springs",
+              "addressRegion": "CO", "addressCountry": "US"},
+  "sameAs": ["https://exceptionalcos.com", "https://excoadvisors.com",
+             "https://www.exceptionalwealth.us", "https://insureexceptional.com",
+             "https://chrisseegers.com",
+             "https://www.youtube.com/@ExceptionalCompaniesPodcast",
+             "https://www.youtube.com/@ColoradoBusinessPodcast"],
+}
+
+CHRIS = {"@type": "Person", "name": "Chris Seegers", "url": "https://chrisseegers.com"}
+TARA  = {"@type": "Person", "name": "Tara Seegers"}
+MARCUS = {"@type": "Person", "name": "Marcus Seegers"}
+
+def crumbs(*pairs):
+    return {"@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": i + 1, "name": n, "item": SITE + u}
+        for i, (n, u) in enumerate(pairs)]}
+
+def book_ld(name, authors, url, published=None, isbn=None, buy=None, about=None):
+    b = {"@type": "Book", "name": name, "author": authors, "url": SITE + url,
+         "publisher": {"@id": SITE + "/#org"}, "inLanguage": "en-US"}
+    if published: b["datePublished"] = published
+    if isbn: b["isbn"] = isbn
+    if about: b["about"] = about
+    if buy: b["workExample"] = {"@type": "Book", "bookFormat": "https://schema.org/Paperback",
+                                "url": buy}
+    return b
+
+def graph(*nodes):
+    return {"@context": "https://schema.org", "@graph": list(nodes)}
+
+
+def write(path, title, desc, body, depth=0, schema=None):
     out = ROOT / (path.lstrip("/") + ("index.html" if path.endswith("/") else ""))
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(head(title, desc, path, depth) + body + FOOT, encoding="utf-8")
+    out.write_text(head(title, desc, path, depth, schema) + body + FOOT, encoding="utf-8")
     print("  wrote", out.relative_to(ROOT))
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -468,7 +541,7 @@ home = f"""
           </div>
         </div>
         <div class="card">
-          <div class="kicker">Co-host &middot; Chris Seegers</div>
+          <div class="kicker">Colorado Springs &middot; weekly</div>
           <div class="title">Colorado Business Podcast</div>
           <p>The entrepreneurs, operators, and changemakers building the Colorado business community.</p>
           <div class="chips">
@@ -560,7 +633,10 @@ home = f"""
 write("/", "Exceptional Media — Books, Podcasts &amp; the EXCEPTIONAL Magazine",
       "Exceptional Media is the publishing arm of Exceptional Companies: the Life, Business and "
       "Wealth OS trilogy, the Main Street books, two weekly podcasts, and EXCEPTIONAL magazine.",
-      home)
+      home, schema=graph(
+        ORG,
+        {"@type": "WebSite", "@id": SITE + "/#site", "url": SITE, "name": "Exceptional Media",
+         "publisher": {"@id": SITE + "/#org"}, "inLanguage": "en-US"}))
 
 # ══════════════════════════════════════════════════════════════════════════
 # BOOKS INDEX
@@ -632,7 +708,19 @@ books = pagehead("Books", "The catalogue.",
 """
 write("/books/", "Books — Exceptional Media",
       "The Exceptional trilogy — Exceptional by Design, Exceptional Systems and Exceptional "
-      "Stewardship — plus the Main Street books on selling and buying a business.", books)
+      "Stewardship — plus the Main Street books on selling and buying a business.", books,
+      schema=graph(crumbs(("Home", "/"), ("Books", "/books/")), {
+        "@type": "CollectionPage", "name": "Books", "url": SITE + "/books/",
+        "isPartOf": {"@id": SITE + "/#site"},
+        "hasPart": [
+          book_ld("Exceptional by Design", [CHRIS, TARA], "/books/exceptional-by-design/", "2026"),
+          book_ld("Exceptional Systems", [CHRIS, MARCUS], "/books/exceptional-systems/"),
+          book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/"),
+          book_ld("Selling Main Street", [CHRIS], "/books/", "2024",
+                  buy="https://www.amazon.com/dp/B0D2B72W18"),
+          book_ld("Buying Main Street", [CHRIS], "/books/", "2025",
+                  buy="https://www.amazon.com/dp/195787029X"),
+        ]}))
 
 # ══════════════════════════════════════════════════════════════════════════
 # BOOK 1 — EXCEPTIONAL BY DESIGN
@@ -809,7 +897,13 @@ ebd = f"""
 """
 write("/books/exceptional-by-design/", "Exceptional by Design — Book One of the Exceptional Trilogy",
       "Chris and Tara Seegers on designing a life on purpose: eight pillars, four phases, and the "
-      "Exceptional Design Assessment. Book one — it installs the Exceptional Life OS.", ebd, depth=2)
+      "Exceptional Design Assessment. Book one — it installs the Exceptional Life OS.", ebd, depth=2,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional by Design", "/books/exceptional-by-design/")),
+        book_ld("Exceptional by Design: Building Your Dream Life", [CHRIS, TARA],
+                "/books/exceptional-by-design/", "2026",
+                about=["Personal development", "Goal setting", "Life planning", "Faith and work"])))
 
 # ══════════════════════════════════════════════════════════════════════════
 # EXCERPT — Exceptional by Design, Chapter 4
@@ -843,7 +937,7 @@ exc = f"""
         Seegers and Tara Seegers. Chapter four of seventeen. Reproduced in full, in the
         authors&rsquo; own voice.</div>
 
-      <h3>In this chapter</h3>
+      <h2>In this chapter</h2>
       <ul class="bullets">
         <li>How to get quiet and hear what you really want</li>
         <li>The ten-year vision exercise that changes everything</li>
@@ -852,7 +946,7 @@ exc = f"""
         <li>How to make your vision so clear you can taste it</li>
       </ul>
 
-      <h3>Getting Quiet</h3>
+      <h2>Getting Quiet</h2>
       <p class="drop">When we decided to create the design for our exceptional life after
         Tara&rsquo;s health event, the first thing we did was get quiet. Individually, and
         together as a couple.</p>
@@ -871,7 +965,7 @@ exc = f"""
         be interrupted. Bring your journal. Bring these questions. Bring an openness to what might
         emerge.</p>
 
-      <h3>The Ten-Year Vision Exercise</h3>
+      <h2>The Ten-Year Vision Exercise</h2>
       <p>Here&rsquo;s the exercise that will change your life: imagine it&rsquo;s ten years from
         today. You&rsquo;re living your absolute dream life. Everything you&rsquo;ve worked toward
         has come to fruition. You&rsquo;re living at your highest potential.</p>
@@ -926,7 +1020,17 @@ exc = f"""
 write("/books/exceptional-by-design/excerpt/",
       "Create Your Life Vision — Chapter Four, Read in Full",
       "The complete fourth chapter of Exceptional by Design by Chris and Tara Seegers: getting "
-      "quiet, and the ten-year vision exercise, reproduced in full.", exc, depth=3)
+      "quiet, and the ten-year vision exercise, reproduced in full.", exc, depth=3,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional by Design", "/books/exceptional-by-design/"),
+               ("Chapter four", "/books/exceptional-by-design/excerpt/")),
+        {"@type": "Chapter", "name": "Create Your Life Vision", "position": 4,
+         "author": [CHRIS, TARA], "inLanguage": "en-US",
+         "url": SITE + "/books/exceptional-by-design/excerpt/",
+         "isPartOf": {"@type": "Book", "name": "Exceptional by Design: Building Your Dream Life",
+                      "url": SITE + "/books/exceptional-by-design/"},
+         "publisher": {"@id": SITE + "/#org"}}))
 
 
 # ══════════════════════════════════════════════════════════════════════════
@@ -966,8 +1070,10 @@ sysbk = f"""
         <p><em>Exceptional Systems</em> is our fix, written as a loop you run rather than a theory
           you agree with. Four phases, cycled quarterly and annually, each pass
           compounding on the last.</p>
-        <p>It is also the book that makes <em>Selling Main Street</em> worth reading. The work you
-          do here is what makes the exit in that book possible at all &mdash; alongside the
+        <p>It is also the book that makes
+          <a href="https://www.amazon.com/dp/B0D2B72W18" rel="noopener" target="_blank"><em>Selling
+          Main Street</em></a> worth reading. The work you do here is what makes the exit in that
+          book possible at all &mdash; alongside the
           unglamorous instruments most owners put off, the funded buy-sell and the key person
           cover we write through
           <a href="https://insureexceptional.com" rel="noopener" target="_blank">Exceptional
@@ -1072,7 +1178,12 @@ sysbk = f"""
 write("/books/exceptional-systems/", "Exceptional Systems — Book Two of the Exceptional Trilogy",
       "Chris and Marcus Seegers on building a business that runs on documentation and discipline "
       "instead of heroic effort. Book two — it installs the Exceptional Business OS.",
-      sysbk, depth=2)
+      sysbk, depth=2,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional Systems", "/books/exceptional-systems/")),
+        book_ld("Exceptional Systems", [CHRIS, MARCUS], "/books/exceptional-systems/",
+                about=["Business operations", "Systems and processes", "Business exit planning"])))
 
 # ══════════════════════════════════════════════════════════════════════════
 # BOOK 3 — EXCEPTIONAL STEWARDSHIP
@@ -1097,7 +1208,8 @@ stw = f"""
         <div class="eyebrow">About the book</div>
         <h2 class="h2 mt2">The wire hits. Then what?</h2>
         <hr class="accentrule mt3">
-        <p class="mt3">Our first two books get you to the transaction. This one starts the day after.</p>
+        <p class="mt3">Our <a href="/books/">first two books</a> get you to the transaction. This one
+          starts the day after.</p>
         <p>An owner who has spent thirty years building a company has spent thirty years being
           good at exactly one thing that will no longer be true of them. The money is now the
           asset, the calendar is empty, and nobody prepared them for either.</p>
@@ -1166,7 +1278,12 @@ stw = f"""
 #      throughout, so that stop is already satisfied.
 write("/books/exceptional-stewardship/", "Exceptional Stewardship — Book Three of the Exceptional Trilogy",
       "The third book in the Exceptional trilogy: what happens to money once it arrives, how it "
-      "works, and how it leaves well. It installs the Exceptional Wealth OS. In development.", stw, depth=2)
+      "works, and how it leaves well. It installs the Exceptional Wealth OS. In development.", stw, depth=2,
+      schema=graph(
+        crumbs(("Home", "/"), ("Books", "/books/"),
+               ("Exceptional Stewardship", "/books/exceptional-stewardship/")),
+        book_ld("Exceptional Stewardship", [CHRIS], "/books/exceptional-stewardship/",
+                about=["Wealth stewardship", "Family governance", "Legacy planning"])))
 
 # ══════════════════════════════════════════════════════════════════════════
 # PODCASTS
@@ -1207,12 +1324,13 @@ pods = pagehead("On air", "The shows.",
   <div class="wrap">
     <div class="split">
       <div class="body">
-        <div class="eyebrow">Co-host &middot; Chris Seegers</div>
+        <div class="eyebrow">Colorado Springs &middot; weekly</div>
         <h2 class="h1 mt2">Colorado<br>Business<br>Podcast</h2>
         <hr class="accentrule mt3">
         <p class="mt3">The entrepreneurs, operators and changemakers building the Colorado
           business community &mdash; and the stories underneath the companies.</p>
-        <p>Weekly. Chris co-hosts.</p>
+        <p>A show we are part of and keep pointing people to. Three hundred-plus conversations
+          deep into the Colorado business scene.</p>
       </div>
       <div>
         <div class="card card--dark">
@@ -1255,7 +1373,24 @@ pods = pagehead("On air", "The shows.",
 """
 write("/podcasts/", "Podcasts — Exceptional Media",
       "The Exceptional Companies Podcast and the Colorado Business Podcast, hosted and co-hosted "
-      "by Chris Seegers. Listen on Apple, Spotify and YouTube.", pods, depth=1)
+      "by Chris Seegers. Listen on Apple, Spotify and YouTube.", pods, depth=1,
+      schema=graph(
+        crumbs(("Home", "/"), ("Podcasts", "/podcasts/")),
+        {"@type": "PodcastSeries", "name": "Exceptional Companies Podcast",
+         "url": SITE + "/podcasts/", "author": CHRIS, "publisher": {"@id": SITE + "/#org"},
+         "description": "Buying, selling and optimizing businesses — and what faith has to do "
+                        "with any of it.",
+         "sameAs": ["https://podcasts.apple.com/us/podcast/exceptional-companies-podcast/id1765569160",
+                    "https://open.spotify.com/show/5JzPgkrevSMZCFWsXkglJv",
+                    "https://www.youtube.com/@ExceptionalCompaniesPodcast",
+                    "https://exceptionalcompanies.captivate.fm"]},
+        {"@type": "PodcastSeries", "name": "Colorado Business Podcast",
+         "url": "https://coloradobusinesspodcast.com",
+         "description": "The entrepreneurs, operators and changemakers building the Colorado "
+                        "business community.",
+         "sameAs": ["https://podcasts.apple.com/us/podcast/colorado-business-podcast/id1492740546",
+                    "https://open.spotify.com/show/1jSQ8OQSi0rprCcxTGx0KB",
+                    "https://www.youtube.com/@ColoradoBusinessPodcast"]}))
 
 # ══════════════════════════════════════════════════════════════════════════
 # MAGAZINE
@@ -1362,7 +1497,10 @@ mag = f"""
 """
 write("/magazine/", "EXCEPTIONAL Magazine — Exceptional Media",
       "EXCEPTIONAL is a quarterly magazine for Main Street business owners and their advisors. "
-      "One article per vertical every issue: Life, Business, Wealth.", mag, depth=1)
+      "One article per vertical every issue: Life, Business, Wealth.", mag, depth=1,
+      schema=graph({"@type": "Periodical", "name": "EXCEPTIONAL",
+                    "url": SITE + "/magazine/", "publisher": {"@id": SITE + "/#org"},
+                    "inLanguage": "en-US"}) if MAGAZINE_PROMOTED else None)
 
 # ══════════════════════════════════════════════════════════════════════════
 # PRESS — rights, permissions, review copies (NOT a duplicate of the other two)
@@ -1378,8 +1516,10 @@ FEATURES = [
   "https://shoutoutcolorado.com/meet-chris-seegers-entrepreneur-and-capitalist-missionary/"),
  ("5280 Magazine","Not Another Ghost Town &mdash; Hillside as a Dark Sky destination","2017",
   "https://5280.com/not-another-ghost-town/"),
+ # The dated URL that has been in circulation since 2015 returns a redirect loop — flagged in
+ # EBA_Media_Page_Link_Inventory.md in August and never fixed. This /life/ path loads.
  ("Colorado Springs Gazette","Hillside, Colorado: New life for a tiny town","2015",
-  "https://gazette.com/2015/08/16/hillside-colorado-new-life-for-a-tiny-town-bd710771-0164-51a7-8022-1b551ffb1709/"),
+  "https://gazette.com/life/hillside-colorado-new-life-for-a-tiny-town/article_bd710771-0164-51a7-8022-1b551ffb1709.html"),
 ]
 
 press = pagehead("Press desk", "Rights &amp;<br>permissions.",
@@ -1463,7 +1603,8 @@ press = pagehead("Press desk", "Rights &amp;<br>permissions.",
 """
 write("/press/", "Press, Rights &amp; Permissions — Exceptional Media",
       "Review copies, excerpt and reprint permissions, cover art and interview requests for the "
-      "books, podcasts and EXCEPTIONAL magazine published by Exceptional Media.", press, depth=1)
+      "books, podcasts and EXCEPTIONAL magazine published by Exceptional Media.", press, depth=1,
+      schema=graph(crumbs(("Home", "/"), ("Press", "/press/")), ORG))
 
 # ══════════════════════════════════════════════════════════════════════════
 # ABOUT
@@ -1541,6 +1682,34 @@ about = pagehead("About", "Why we<br>publish.",
   </div>
 </section>
 
+<section class="section section--rule">
+  <div class="wrap">
+    <div class="eyebrow">What we publish</div>
+    <h2 class="h2 mt2">Everything, in one place</h2>
+    <hr class="accentrule mt3">
+    <div class="grid g3 mt4">
+      <a class="card" href="/books/">
+        <div class="kicker">Five titles</div>
+        <div class="title">The books</div>
+        <p>The Life, Business and Wealth OS trilogy, and the two Main Street books on selling and
+          buying a company.</p>
+        <span class="go">The catalogue &rsaquo;</span></a>
+      <a class="card" href="/podcasts/">
+        <div class="kicker">Two shows</div>
+        <div class="title">The podcasts</div>
+        <p>Conversations with owners who have built, run, or let go of a company &mdash; including
+          the parts that did not work.</p>
+        <span class="go">Every listening link &rsaquo;</span></a>
+      <a class="card" href="/books/exceptional-by-design/excerpt/">
+        <div class="kicker">Read it now</div>
+        <div class="title">Chapter four, in full</div>
+        <p>&ldquo;Create Your Life Vision&rdquo; from <i>Exceptional by Design</i> &mdash; getting
+          quiet, and the ten-year exercise.</p>
+        <span class="go">Read the chapter &rsaquo;</span></a>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="wrap">
     <div class="eyebrow">The ecosystem</div>
@@ -1570,7 +1739,10 @@ about = pagehead("About", "Why we<br>publish.",
 """
 write("/about/", "About — Exceptional Media",
       "Exceptional Media is the publishing arm of Exceptional Companies, a family office in "
-      "Colorado Springs. We publish what we run on.", about, depth=1)
+      "Colorado Springs. We publish what we run on.", about, depth=1,
+      schema=graph(crumbs(("Home", "/"), ("About", "/about/")), ORG,
+        {"@type": "AboutPage", "url": SITE + "/about/", "name": "About Exceptional Media",
+         "isPartOf": {"@id": SITE + "/#site"}}))
 
 # ══════════════════════════════════════════════════════════════════════════
 # 404 + robots + sitemap
@@ -1584,6 +1756,21 @@ nf = pagehead("404", "Not here.",
       <a class="btn" href="/books/">The books</a>
       <a class="btn btn--ghost" href="/">Home</a>
       {mail("Email us", cls="btn btn--ghost")}
+    </div>
+    <div class="mt5">
+      <div class="eyebrow">Everything on this site</div>
+      <div class="linklist mt3">
+        <div class="linkrow"><div><div class="n"><a href="/books/">Books</a></div>
+          <div class="d">Five titles &mdash; the trilogy and the Main Street books</div></div></div>
+        <div class="linkrow"><div><div class="n"><a href="/books/exceptional-by-design/excerpt/">Chapter four, in full</a></div>
+          <div class="d">&ldquo;Create Your Life Vision&rdquo; from <i>Exceptional by Design</i></div></div></div>
+        <div class="linkrow"><div><div class="n"><a href="/podcasts/">Podcasts</a></div>
+          <div class="d">Both shows, every listening link</div></div></div>
+        <div class="linkrow"><div><div class="n"><a href="/press/">Press, rights and permissions</a></div>
+          <div class="d">Review copies, excerpts, cover art</div></div></div>
+        <div class="linkrow"><div><div class="n"><a href="/about/">About</a></div>
+          <div class="d">The imprint and the authors</div></div></div>
+      </div>
     </div>
   </div>
 </section>

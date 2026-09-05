@@ -25,6 +25,7 @@ cross-family piece cannot wear one entity's accent.
 assets/exco-media.css               One stylesheet, ~260 lines, all tokens at the top
 build.py                            Regenerates every page. Edit here, not the HTML.
 check.py                            Build gate — runs in CI, fails the deploy on any problem
+make_assets.py                      Regenerates the favicon, touch icon and social card
 make_preview.py                     Bundles the site into one shareable preview.html
 DEPLOY.md                           Go-live steps and the exact GoDaddy DNS records
 dnscheck.py                         Verifies DNS, HTTPS and the certificate after the switch
@@ -263,3 +264,82 @@ is a soft spot worth closing.
 
 **14 · No excerpt for *Exceptional Systems* or *Exceptional Stewardship*.** Systems is mid-revision
 per the redline; Stewardship has no manuscript. Both would need clearance and text.
+
+
+---
+
+## FULL REVIEW — Sept 5
+
+Every outbound link on the site was fetched and checked. Two were wrong.
+
+### Fixed
+
+**The Colorado Springs Gazette link was dead.** The 2015-dated URL that has been in circulation
+since 2015 returns an infinite redirect loop — `EBA_Media_Page_Link_Inventory.md` flagged it in
+August and it was never fixed. A working URL exists on the `/life/` path and is now in place,
+confirmed loading with the Seegers' own quote in it: *"We didn't buy this for us... We just didn't
+want this place, with all its history, to be gone."*
+
+**The Colorado Business Podcast host credit came off.** Apple Podcasts **and** Spotify both list
+the hosts as *Andrew Hazzlee and Marcus Alvarado*. Chris is named on neither. Internal records and
+chrisseegers.com say he co-hosts. Two independent primary sources against the internal record is
+not something to publish through, so the page now describes the show and claims no role. **See
+open item 15 — this needs a ruling, and the credit goes straight back if it is his.**
+
+### Verified good
+
+5280 Magazine · Shoutout Colorado · National Christian Foundation (dated 20 March 2026, matching
+the correction already logged) · both Apple Podcasts listings · both Spotify listings · the
+Exceptional Companies Podcast YouTube channel · excoadvisors.com · exceptionalcos.com ·
+exceptionalwealth.us · insureexceptional.com · townofhillside.com · exceptional-os.com ·
+coloradobusinesspodcast.com.
+
+**Could not be verified from here, and are not known-bad:** both Amazon links and both Voyage
+Denver links. Amazon and Voyage Denver block automated fetching by robots.txt. Open them once by
+hand.
+
+### Added
+
+**Structured data on every page.** JSON-LD: `Organization` and `WebSite` on the home page, a
+`Book` node per title with authors and publisher, `PodcastSeries` for both shows, a `Chapter` node
+for the excerpt, and `BreadcrumbList` on every nested page. This is the direct fix for the
+September audit's finding — *attribution, not effort*. Prose alone cannot tell a search or answer
+engine that five books, two shows and a magazine share one publisher. Only facts already on the
+page are in the markup; no counts, no figures.
+
+**Social card, favicon and touch icon** (`make_assets.py`). A shared link now renders a proper
+1200x630 card instead of a blank rectangle. The favicon is the energy device in pure geometry —
+no letterform, because a letter is unreadable at 16px and three gold bars at 30 degrees are not.
+
+**Accessibility.** A skip link as the first tab stop, a `<main>` landmark on every page, and
+heading levels that no longer skip — the footer column labels were `h4` under an `h2`, and the
+excerpt jumped `h1` to `h3`. All now sequential.
+
+**Link gaps closed.** *Selling Main Street* is a link where it is named in the Systems text rather
+than plain italics; "our first two books" on the Stewardship page goes to the catalogue; every book
+page routes a reviewer to the press desk; the About page gained a "what we publish" block, which it
+had been missing entirely while linking outward to four sibling companies; the 404 became a real
+index of the site; and the excerpt got a permanent footer link.
+
+**`check.py` grew from 8 rules to 12.** Now also: `<main>` present, skip link present, exactly one
+`h1`, alt text on every image, no skipped heading levels, `og:image` / favicon / `og:url` on every
+page, and JSON-LD that parses.
+
+---
+
+## OPEN ITEMS FROM THE REVIEW
+
+**15 · Does Chris co-host the Colorado Business Podcast?** Apple and Spotify both credit Andrew
+Hazzlee and Marcus Alvarado only. The project record and chrisseegers.com say he co-hosts. The
+site currently claims no role. If the credit is his, say so and it goes back in one edit — and the
+platform metadata should be corrected too, because that is where journalists and bookers look.
+
+**16 · Episode counts now have a primary source, read 5 Sept 2026.** Apple lists the Exceptional
+Companies Podcast at **70 episodes** (episode 71 published five days ago) and the Colorado Business
+Podcast at **340**; coloradobusinesspodcast.com shows episode 343. That settles the old 61-vs-85+
+dispute with a real source. **Nothing is printed on the site yet** — that is a decision, not an
+oversight. Editorial standard no. 6 says date every estimate, so if these go up they go up stamped.
+
+**17 · The social card wordmark is a stand-in.** DejaVu Sans Condensed Bold, not Bebas Neue, which
+cannot be installed in the build environment. The structure carries the brand; the letterforms are
+not ours. Regenerate `make_assets.py` with a licensed Bebas file — same job as open item 1.
