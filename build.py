@@ -116,7 +116,7 @@ FOOT = f"""
         <h2>The family</h2>
         <a href="https://exceptionalcos.com" rel="noopener">Exceptional Companies</a>
         <a href="https://excoadvisors.com" rel="noopener">Exceptional Business Advisors</a>
-        <a href="https://www.exceptionalwealth.us" rel="noopener">Exceptional Wealth &middot; Family Office</a>
+        <a href="https://www.exceptionalwealth.us" rel="noopener">Exceptional Wealth &amp; Family Office</a>
         <a href="https://insureexceptional.com" rel="noopener">Exceptional Insurance</a>
         <a href="https://chrisseegers.com" rel="noopener">Chris Seegers</a>
       </div>
@@ -655,7 +655,7 @@ home = f"""
           Main Street books came straight out of it.</p>
       </div>
       <div>
-        <div class="eyebrow"><a href="https://www.exceptionalwealth.us" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Wealth &middot; Family Office</a></div>
+        <div class="eyebrow"><a href="https://www.exceptionalwealth.us" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Wealth &amp; Family Office</a></div>
         <p class="small mt1" style="color:var(--ink)">What happens to the family, the plan and the
           legacy after the wire hits &mdash; utilizing your resources to live the life you
           designed.</p>
@@ -764,7 +764,7 @@ home = f"""
         <p class="lead mt3">A quarterly magazine for Main Street owners and the advisors around
           them. One article per vertical, every issue: Life, Business, Wealth.</p>
         <p class="small mt3">Published by Exceptional Companies, jointly serving Exceptional Business
-          Advisors, Exceptional. Wealth &middot; Family Office, and Exceptional Insurance.</p>
+          Advisors, Exceptional Wealth &amp; Family Office, and Exceptional Insurance.</p>
         {'<div class="btnrow mt4"><a class="btn" href="/magazine/">Inside the magazine</a></div>'
           if MAGAZINE_PROMOTED else
           '<p class="small mt3" style="color:rgba(255,255,255,.6)">Issue 01, Fall 2026.</p>'}
@@ -1778,7 +1778,7 @@ mag = f"""
           WEALTH rather than beside it &mdash; a buy-sell that is not funded is not a plan, and
           that is Exceptional Insurance&rsquo;s ground.</p>
         <p>Published by Exceptional Companies, jointly serving Exceptional Business Advisors,
-          Exceptional. Wealth &middot; Family Office, and Exceptional Insurance.</p>
+          Exceptional Wealth &amp; Family Office, and Exceptional Insurance.</p>
       </div>
       <div>
         <div class="eyebrow">The rules it runs on</div>
@@ -2075,7 +2075,7 @@ about = pagehead("About", "Why we<br>publish.",
         <p>Business transition and exit. Guides, not brokers &mdash; they represent the seller and coach the buyer.</p>
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://www.exceptionalwealth.us" rel="noopener" target="_blank">
-        <div class="title">Exceptional Wealth &middot; Family Office</div>
+        <div class="title">Exceptional Wealth &amp; Family Office</div>
         <p>What happens to the proceeds, the family, and the plan after the transaction.</p>
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://insureexceptional.com" rel="noopener" target="_blank">
