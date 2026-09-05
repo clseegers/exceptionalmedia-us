@@ -663,8 +663,8 @@ home = f"""
       <div>
         <div class="eyebrow"><a href="https://insureexceptional.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Insurance</a></div>
         <p class="small mt1" style="color:var(--ink)">Protection for all of it &mdash; home, auto,
-          umbrella. Plus the life, estate, key person and buy-sell coverage that can turn an
-          exit into opportunity.</p>
+          umbrella. Plus the life, estate, key person and buy-sell coverage that can create
+          opportunity.</p>
       </div>
       <div>
         <div class="eyebrow"><a href="https://exceptionalcos.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Companies</a></div>
@@ -682,7 +682,7 @@ home = f"""
     <h2 class="h1 mt2">Three operating systems.<br>One life.</h2>
     <hr class="accentrule mt3">
     <p class="lead mt3">Most owners define a plan for one of these and improvise the other
-      two. The trilogy treats life, business, and wealth as a single plan design, because they
+      two. The trilogy treats life, business, and wealth as a single design, because they
       move together whether you planned it or not.</p>
     <p class="lead mt2"><i>Exceptional by Design</i> is anticipated in Q1 2027,
       <i>Exceptional Systems</i> in Q4 2027, and <i>Exceptional Stewardship</i> in Q2 2028.</p>
