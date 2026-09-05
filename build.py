@@ -771,7 +771,7 @@ home = f"""
       </div>
       <div>
         <blockquote class="pull" style="border-left-color:var(--accent);color:#fff">
-          Making the complex simple. Every article aims to provide clarity &mdash; and call out
+          Making the complex simple. Every article provides clarity &mdash; and calls out
           conventional advice when it doesn&rsquo;t make sense.
           <cite>Editorial standard no. 4</cite>
         </blockquote>
