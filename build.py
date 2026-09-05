@@ -646,7 +646,7 @@ home = f"""
 <section class="section section--tight section--rule">
   <div class="wrap">
     <div class="eyebrow">Where the material comes from</div>
-    <p class="lead mt2">Nothing here is theory. Four industries, and every framework we publish was
+    <p class="lead mt2">Nothing here is theory. Four industries, and every framework and tool we publish was
       installed in one of them before it was written down.</p>
     <div class="grid g4 mt4">
       <div>
@@ -799,7 +799,7 @@ home = f"""
       <a class="card" href="https://excoadvisors.com" rel="noopener" target="_blank">
         <div class="kicker">excoadvisors.com</div>
         <div class="title">Exceptional Business Advisors</div>
-        <p>The advisory practice the Main Street books came out of &mdash; guides, not brokers.</p>
+        <p>The advisory firm the Main Street books came out of &mdash; guides, not brokers.</p>
         <span class="go">The firm &rsaquo;</span>
       </a>
     </div>
@@ -866,7 +866,7 @@ books = pagehead("Books", "The Library",
     <div class="eyebrow">The Main Street books</div>
     <h2 class="h1 mt2">Both sides of the table.</h2>
     <hr class="accentrule mt3">
-    <p class="lead mt3">Written out of the advisory practice. One for the owner who is selling
+    <p class="lead mt3">Written out of the advisory firm. One for the owner who is selling
       the thing they built. One for the buyer who intends to carry it on.</p>
     <div class="grid g2 mt4">
       {"".join('''<div class="card card--dark">
@@ -1899,9 +1899,9 @@ press = pagehead("Press desk", "Rights &amp;<br>permissions.",
       </a>
       <a class="card" href="https://excoadvisors.com" rel="noopener" target="_blank">
         <div class="kicker">excoadvisors.com</div>
-        <div class="title">The advisory practice</div>
+        <div class="title">The advisory firm</div>
         <p>Writing about business exits, valuations, or the wealth transfer? The firm&rsquo;s media
-          page carries the practice&rsquo;s own coverage and data.</p>
+          page carries the firm&rsquo;s own coverage and data.</p>
         <span class="go">Exceptional Business Advisors &rsaquo;</span>
       </a>
     </div>
