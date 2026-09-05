@@ -681,9 +681,9 @@ home = f"""
     <div class="eyebrow">The trilogy</div>
     <h2 class="h1 mt2">Three operating systems.<br>One life.</h2>
     <hr class="accentrule mt3">
-    <p class="lead mt3">Most owners are handed a plan for one of these and left to improvise the
-      other two. The trilogy treats life, business, and wealth as a single design integration
-      opportunity, because that is how they actually behave.</p>
+    <p class="lead mt3">Most owners define a plan for one of these and improvise the other
+      two. The trilogy treats life, business, and wealth as a single plan design because that
+      is how an integrated life is achieved.</p>
     <p class="lead mt2"><i>Exceptional by Design</i> is anticipated in Q1 2027,
       <i>Exceptional Systems</i> in Q4 2027, and <i>Exceptional Stewardship</i> in Q2 2028.</p>
     <div class="grid g3 mt4">
