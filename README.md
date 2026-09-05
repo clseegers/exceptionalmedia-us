@@ -26,7 +26,8 @@ assets/exco-media.css               One stylesheet, ~260 lines, all tokens at th
 build.py                            Regenerates every page. Edit here, not the HTML.
 check.py                            Build gate — runs in CI, fails the deploy on any problem
 make_preview.py                     Bundles the site into one shareable preview.html
-DEPLOY.md                           Go-live steps and the exact DNS records
+DEPLOY.md                           Go-live steps and the exact GoDaddy DNS records
+dnscheck.py                         Verifies DNS, HTTPS and the certificate after the switch
 .github/workflows/deploy.yml        Build, check, deploy on push to main
 CNAME · .nojekyll · .gitignore
 books/exceptional-by-design/excerpt/   Chapter four, in full
@@ -38,13 +39,14 @@ by editing `assets/exco-media.css`.
 
 ## Deploy
 
-**See `DEPLOY.md`** — step by step, with the exact Route 53 records.
+**See `DEPLOY.md`** — step by step, with the exact GoDaddy records.
 
-Short version: GitHub Pages, same as chrisseegers.com. The repo is initialised and committed,
-`CNAME` holds the domain, and `.github/workflows/deploy.yml` regenerates the site from `build.py`
-and runs `check.py` before every deploy. Push, set Pages source to **GitHub Actions**, swap the
-apex A records off AWS parking onto GitHub's four IPs, point `www` at `<account>.github.io`, and
-enforce HTTPS.
+Short version: GitHub Pages under the `clseegers` account, DNS at GoDaddy — the identical setup
+chrisseegers.com already runs on. The repo is initialised and committed, `CNAME` holds the domain,
+and `.github/workflows/deploy.yml` regenerates from `build.py` and runs `check.py` before every
+deploy. Push, set Pages source to **GitHub Actions**, replace GoDaddy's parking A record with
+GitHub's four IPs, point `www` at `clseegers.github.io`, turn GoDaddy Forwarding **off**, and
+enforce HTTPS. `python3 dnscheck.py` verifies the whole thing.
 
 Local: `python3 build.py && python3 check.py && python3 -m http.server 8000`
 
