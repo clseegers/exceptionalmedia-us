@@ -837,7 +837,7 @@ write("/", "Exceptional Media — Books, Podcasts &amp; the EXCEPTIONAL Magazine
 # ══════════════════════════════════════════════════════════════════════════
 # BOOKS INDEX
 # ══════════════════════════════════════════════════════════════════════════
-books = pagehead("Books", "The catalogue.",
+books = pagehead("Books", "The Library",
   "Five titles. Three of them are one argument told in three parts &mdash; life, business, and "
   "wealth as a single design problem. Two of them are about the transaction at the end.") + f"""
 <section class="section">
@@ -2037,7 +2037,7 @@ about = pagehead("About", "Why we<br>publish.",
         <div class="title">The books</div>
         <p>The Life, Business and Wealth OS trilogy, and the two Main Street books on selling and
           buying a company.</p>
-        <span class="go">The catalogue &rsaquo;</span></a>
+        <span class="go">The library &rsaquo;</span></a>
       <a class="card" href="/podcasts/">
         <div class="kicker">Two shows</div>
         <div class="title">The podcasts</div>
@@ -2092,7 +2092,7 @@ write("/about/", "About — Exceptional Media",
 # 404 + robots + sitemap
 # ══════════════════════════════════════════════════════════════════════════
 nf = pagehead("404", "Not here.",
-  "That page has moved or never existed. Start from the catalogue, or tell us what you were "
+  "That page has moved or never existed. Start from the library, or tell us what you were "
   "looking for.") + f"""
 <section class="section">
   <div class="wrap">
