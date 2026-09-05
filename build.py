@@ -1755,7 +1755,7 @@ mag = f"""
   <div class="energy energy--gold" aria-hidden="true" style="opacity:.35"></div>
   <div class="wrap">
     <div class="eyebrow">Quarterly &middot; print and digital</div>
-    <h1 class="display mt2">EXCEPTIONAL</h1>
+    <h1 class="display mt2">EXCEPTIONAL.</h1>
     <hr class="accentrule wide mt3">
     <p class="lead mt3">A magazine for Main Street owners and the advisors around them. One
       article per vertical, every issue: Life, Business, Wealth.</p>
