@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Exceptional Media</title>
+<meta name="description" content="That page has moved or never existed.">
+<link rel="canonical" href="https://exceptionalmedia.us/404">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exceptional Media">
+<meta property="og:title" content="Page not found — Exceptional Media">
+<meta property="og:description" content="That page has moved or never existed.">
+<meta property="og:url" content="https://exceptionalmedia.us/404">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600&family=Quattrocento:wght@400;700&family=Roboto:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="/assets/exco-media.css">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="bar"></div>
+  <div class="inner">
+    <!-- Typographic lockup. No authored vector mark exists yet (README, open item 1).
+         When the SVG arrives, replace this <a> block with an inline SVG at 0.5X clear space. -->
+    <a class="lockup" href="/" aria-label="Exceptional Media — home">
+      <span class="m1">EXCEPTIONAL</span>
+      <span class="m2">MEDIA</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="/books/">Books</a>
+      <a href="/podcasts/">Podcasts</a>
+      <a href="/press/">Press</a>
+      <a href="/about/">About</a>
+    </nav>
+  </div>
+</header>
+
+<section class="pagehead">
+  <div class="energy" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="eyebrow">404</div>
+    <h1 class="display mt2">Not here.</h1>
+    <hr class="accentrule wide mt3">
+    <p class="lead mt3">That page has moved or never existed. Start from the catalogue, or tell us what you were looking for.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="btnrow">
+      <a class="btn" href="/books/">The books</a>
+      <a class="btn btn--ghost" href="/">Home</a>
+      <a class="mail btn btn--ghost" data-u="info" data-d="exceptionalcos.com" href="#contact-email">Email us</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="energy" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="tag">DESIGNED FOR EXCEPTIONAL.<i>LIFE. BUSINESS. WEALTH.</i></div>
+        <p class="small mt3" style="color:rgba(255,255,255,.7);max-width:38ch">
+          We are the publishing arm of Exceptional Companies &mdash; a family office in Colorado
+          Springs where we buy, build, and operate exceptional businesses across advisory, energy,
+          insurance, wealth, and media.</p>
+      </div>
+      <div>
+        <h4>Publications</h4>
+        <a href="/books/">Books</a>
+        <a href="/podcasts/">Podcasts</a>
+        
+        <a href="/press/">Press &amp; rights</a>
+      </div>
+      <div>
+        <h4>The family</h4>
+        <a href="https://exceptionalcos.com" rel="noopener">Exceptional Companies</a>
+        <a href="https://excoadvisors.com" rel="noopener">Exceptional Business Advisors</a>
+        <a href="https://www.exceptionalwealth.us" rel="noopener">Exceptional Wealth &middot; Family Office</a>
+        <a href="https://insureexceptional.com" rel="noopener">Exceptional Insurance</a>
+        <a href="https://chrisseegers.com" rel="noopener">Chris Seegers</a>
+      </div>
+      <div>
+        <h4>Listen &amp; read</h4>
+        <a href="https://www.youtube.com/@ExceptionalCompaniesPodcast" rel="noopener">Exceptional Companies Podcast</a>
+        <a href="https://www.youtube.com/@ColoradoBusinessPodcast" rel="noopener">Colorado Business Podcast</a>
+        <a href="https://exceptional-os.com" rel="noopener">Exceptional Life OS</a>
+        <a href="https://townofhillside.com" rel="noopener">Town of Hillside</a>
+      </div>
+    </div>
+    <div class="rule"></div>
+    <div class="fine">
+      <span>&copy; 2026 Exceptional Companies. Colorado Springs &middot; Austin &middot; Midland.</span>
+      <span><a class="mail" id="contact-email" data-u="info" data-d="exceptionalcos.com" data-show="1" href="#contact-email" style="display:inline">info [at] exceptionalcos [dot] com</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Assembles every .mail address at runtime. The literal string never appears in
+   the served HTML, so source scrapers and regex harvesters come up empty. */
+(function () {
+  var n = document.getElementsByClassName('mail');
+  for (var i = 0; i < n.length; i++) {
+    var e = n[i], u = e.getAttribute('data-u'), d = e.getAttribute('data-d');
+    if (!u || !d) continue;
+    var addr = u + String.fromCharCode(64) + d, sub = e.getAttribute('data-s');
+    e.setAttribute('href', 'mailto:' + addr + (sub ? '?subject=' + sub : ''));
+    if (e.getAttribute('data-show')) e.textContent = addr;
+  }
+})();
+</script>
+
+</body>
+</html>

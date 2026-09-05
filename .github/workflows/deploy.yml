@@ -1,0 +1,55 @@
+# Deploys exceptionalmedia.us to GitHub Pages on every push to main.
+# Regenerates the HTML from build.py first, so the source of truth stays the generator.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Regenerate the site from build.py
+        run: python3 build.py
+
+      - name: Verify the build
+        run: python3 check.py
+
+      - name: Package the site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' \
+                --exclude '__pycache__' --exclude 'preview.html' \
+                --exclude 'build.py' --exclude 'check.py' --exclude 'make_preview.py' \
+                --exclude 'README.md' --exclude 'DEPLOY.md' \
+                ./ _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
