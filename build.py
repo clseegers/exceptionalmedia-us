@@ -1981,7 +1981,7 @@ about = pagehead("About", "Why we<br>publish.",
       <div class="body">
         <h2 class="h2">Everything here was used before it was written down.</h2>
         <hr class="accentrule mt3">
-        <p class="mt3">We are a family office in Colorado Springs, and we buy, build and operate
+        <p class="mt3">We are an innovation company in Colorado Springs, and we buy, build and operate
           businesses across advisory, energy, insurance, wealth and media. Every framework we
           publish was installed in one of our own companies first, and most of them broke at
           least once before they worked.</p>
