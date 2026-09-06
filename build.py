@@ -785,7 +785,7 @@ home = f"""
     <div class="eyebrow">Elsewhere</div>
     <h2 class="h2 mt2">Where our work shows up</h2>
     <hr class="accentrule mt3">
-    <div class="grid g3 mt4">
+    <div class="grid g4 mt4">
       <a class="card" href="/press/">
         <div class="kicker">This site</div>
         <div class="title">Press, rights &amp; permissions</div>
@@ -804,6 +804,13 @@ home = f"""
         <div class="title">Exceptional Business Advisors</div>
         <p>The advisory firm the Main Street books came out of &mdash; guides, not brokers.</p>
         <span class="go">The firm &rsaquo;</span>
+      </a>
+      <a class="card" href="https://www.exceptionalwealth.us" rel="noopener" target="_blank">
+        <div class="kicker">exceptionalwealth.us</div>
+        <div class="title">Exceptional Wealth &amp; Family Office</div>
+        <p>The wealth management firm that turns a transaction into a plan that fuels your
+          passion and gives you the roadmap to live the life you want.</p>
+        <span class="go">Visit &rsaquo;</span>
       </a>
     </div>
   </div>
