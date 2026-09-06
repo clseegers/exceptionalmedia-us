@@ -404,7 +404,7 @@ BOOKS = [
          authors="Tara Seegers and Chris Seegers", status="soon", statlbl="Q2 2028",
          yr="2028", when="Anticipated Q2 2028",
          blurb="The third book completes the trilogy: what happens to money once it arrives, "
-               "how it works, and how it leaves well.",
+               "how it works, and how to leave it well.",
          cov=["EXCEPTIONAL","STEWARDSHIP"]),
 ]
 
