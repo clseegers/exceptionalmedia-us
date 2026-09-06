@@ -1421,7 +1421,7 @@ stw = f"""
     <h1 class="display mt2">Exceptional<br>Stewardship</h1>
     <hr class="accentrule wide mt3">
     <p class="lead mt3">Tara Seegers and Chris Seegers on what happens to money once it arrives,
-      how it works, and how it leaves well. The book that completes the trilogy.</p>
+      how it works, and how to leave it well. The book that completes the trilogy.</p>
     <div class="mt3"><span class="pill pill--soon">Anticipated Q2 2028</span></div>
   </div>
 </section>
@@ -1503,7 +1503,7 @@ stw = f"""
 #      throughout, so that stop is already satisfied.
 write("/books/exceptional-stewardship/", "Exceptional Stewardship — Book Three of the Exceptional Trilogy",
       "The third book in the Exceptional trilogy: what happens to money once it arrives, how it "
-      "works, and how it leaves well. Tara and Chris Seegers on the Exceptional Wealth OS, "
+      "works, and how to leave it well. Tara and Chris Seegers on the Exceptional Wealth OS, "
       "anticipated Q2 2028.", stw, depth=2,
       schema=graph(
         crumbs(("Home", "/"), ("Books", "/books/"),
