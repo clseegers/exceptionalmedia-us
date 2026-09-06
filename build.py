@@ -2084,20 +2084,22 @@ about = pagehead("About", "Why we<br>publish.",
     <div class="grid g4 mt4">
       <a class="card" href="https://excoadvisors.com" rel="noopener" target="_blank">
         <div class="title">Exceptional Business Advisors</div>
-        <p>Business transition and exit. Guides, not brokers &mdash; they represent the seller and coach the buyer.</p>
+        <p>Sell-side and buy-side transition work. The Main Street books came straight out of it.</p>
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://www.exceptionalwealth.us" rel="noopener" target="_blank">
         <div class="title">Exceptional Wealth &amp; Family Office</div>
-        <p>What happens to the proceeds, the family, and the plan after the transaction.</p>
+        <p>What happens to the family, the plan and the legacy after the wire hits &mdash; utilizing
+          your resources to live the life you design.</p>
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://insureexceptional.com" rel="noopener" target="_blank">
         <div class="title">Exceptional Insurance</div>
-        <p>Home, auto, life and umbrella for the family &mdash; and the key person and buy-sell
-          cover that decides whether a company can change hands at all.</p>
+        <p>Protection for all of it &mdash; home, auto, umbrella. Plus the life, estate, key person
+          and buy-sell coverage that can turn an exit into opportunity.</p>
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://exceptionalcos.com" rel="noopener" target="_blank">
         <div class="title">Exceptional Companies</div>
-        <p>The family office &mdash; land, energy and the operating portfolio.</p>
+        <p>An Innovation Company: the operating portfolio where the systems get stress-tested across
+          industries and our own resources are deployed to live the life we designed.</p>
         <span class="go">Visit &rsaquo;</span></a>
     </div>
   </div>
