@@ -100,7 +100,7 @@ FOOT = f"""
       <div>
         <div class="tag">DESIGNED FOR EXCEPTIONAL.<i>LIFE. BUSINESS. WEALTH.</i></div>
         <p class="small mt3" style="color:rgba(255,255,255,.7);max-width:38ch">
-          We are the publishing arm of Exceptional Companies &mdash; an innovation company that
+          We are the publishing arm of Exceptional Companies &mdash; an Innovation Ecosystem that
           uses business as the platform to change the status quo. We are builders. Operators.
           Thought leaders. Integrating life, wealth, and business. We stress-test our knowledge
           across industries and asset classes &mdash; learning as we go, and sharing it with
@@ -453,7 +453,8 @@ def bookcard(b, base="/books/"):
 
 BIO_CHRIS_LONG = """Chris Seegers is a business owner with a long track record of starting and
 buying companies and building them into successful, self-governed entities. He founded
-Exceptional Companies, an innovation company. He is an active owner in many different businesses,
+Exceptional Companies, which uses business as the platform to change the status quo. He is an
+active owner in many different businesses,
 and has served on leadership teams that have raised and deployed over $750 million in investor capital.
 Chris is a &ldquo;capitalist missionary,&rdquo; and his heart is activating and equipping others
 to live exceptional lives.</p><p>Chris is a follower of Jesus, husband to his best friend Tara,
@@ -461,8 +462,9 @@ and father to Jed, Chisum, and Lillian. He is a sibling to seven, and loves deep
 friendships and old books. Chris and his family live in Colorado Springs surrounded by mountains
 and amazing people."""
 
-BIO_CHRIS_SHORT = """Chris Seegers founded Exceptional Companies, an innovation company, and has served
-on leadership teams that raised and deployed over $750 million in investor capital. A
+BIO_CHRIS_SHORT = """Chris Seegers founded Exceptional Companies, which uses business as the
+platform to change the status quo. He has served on leadership teams that raised and deployed
+over $750 million in investor capital. A
 self-described &ldquo;capitalist missionary,&rdquo; he lives in Colorado Springs with his wife and
 co-author Tara and their three children."""
 
@@ -672,7 +674,7 @@ home = f"""
       </div>
       <div>
         <div class="eyebrow"><a href="https://exceptionalcos.com" rel="noopener" target="_blank" style="color:inherit;border-bottom-color:var(--rule)">Exceptional Companies</a></div>
-        <p class="small mt1" style="color:var(--ink)">An Innovation Company: the operating portfolio
+        <p class="small mt1" style="color:var(--ink)">An Innovation Ecosystem: the operating portfolio
           where the systems get stress-tested across industries and our own resources are
           deployed to live the life we designed.</p>
       </div>
@@ -1536,7 +1538,8 @@ write("/books/exceptional-by-design/press/",
              "Fulfillment, Fun, Freedom and Business &mdash; across four phases: Dream It, Build "
              "It, Optimize It, Live It. Seventeen chapters, each one an exercise rather than an "
              "argument. It is written to be worked, not read.<br><br>"
-             "Chris Seegers founded Exceptional Companies, an innovation company. Tara Seegers is a "
+             "Chris Seegers founded Exceptional Companies, which uses business as the platform to change "
+             "the status quo. Tara Seegers is a "
              "Certified Financial Planner&trade; named to Forbes&rsquo; Top Women Wealth Advisors "
              "Best-In-State list. They live in Colorado Springs with their three children.",
         contains=[
@@ -1604,7 +1607,8 @@ write("/books/exceptional-systems/press/",
              "quarterly and annually, each pass compounding on the last. It ends with the phase "
              "most operating systems skip &mdash; the deliberate harvest, whether that is a sale, "
              "a transition or a restructure.<br><br>"
-             "Chris Seegers founded Exceptional Companies, an innovation company. Marcus Seegers is a "
+             "Chris Seegers founded Exceptional Companies, which uses business as the platform to change "
+             "the status quo. Marcus Seegers is a "
              "Co-Founder of Exceptional Business Advisors, where he owns operations and systems.",
         contains=[
           ("Four phases", "Dream It &middot; Build It &middot; Optimize It &middot; Monetize It"),
@@ -1979,7 +1983,7 @@ about = pagehead("About", "Why we<br>publish.",
       <div class="body">
         <h2 class="h2">Everything here was used before it was written down.</h2>
         <hr class="accentrule mt3">
-        <p class="mt3">We are an innovation company in Colorado Springs, and we buy, build and operate
+        <p class="mt3">We are an Innovation Ecosystem in Colorado Springs, and we buy, build and operate
           businesses across advisory, energy, insurance, wealth and media. Every framework we
           publish was installed in one of our own companies first, and most of them broke at
           least once before they worked.</p>
@@ -2096,7 +2100,7 @@ about = pagehead("About", "Why we<br>publish.",
         <span class="go">Visit &rsaquo;</span></a>
       <a class="card" href="https://exceptionalcos.com" rel="noopener" target="_blank">
         <div class="title">Exceptional Companies</div>
-        <p>An Innovation Company: the operating portfolio where the systems get stress-tested across
+        <p>An Innovation Ecosystem: the operating portfolio where the systems get stress-tested across
           industries and our own resources are deployed to live the life we designed.</p>
         <span class="go">Visit &rsaquo;</span></a>
     </div>
@@ -2104,7 +2108,7 @@ about = pagehead("About", "Why we<br>publish.",
 </section>
 """
 write("/about/", "About — Exceptional Media",
-      "Exceptional Media is the publishing arm of Exceptional Companies, an innovation company in "
+      "Exceptional Media is the publishing arm of Exceptional Companies, an Innovation Ecosystem in "
       "Colorado Springs. We publish what we run on.", about, depth=1,
       schema=graph(crumbs(("Home", "/"), ("About", "/about/")), ORG,
         {"@type": "AboutPage", "url": SITE + "/about/", "name": "About Exceptional Media",
