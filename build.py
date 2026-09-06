@@ -128,6 +128,7 @@ FOOT = f"""
         <a href="https://www.youtube.com/@ColoradoBusinessPodcast" rel="noopener">Colorado Business Podcast</a>
         <a href="https://exceptional-os.com" rel="noopener">Exceptional Life OS</a>
         <a href="https://townofhillside.com" rel="noopener">Town of Hillside</a>
+        <a href="https://discoversoco.com" rel="noopener">Discover SoCo</a>
       </div>
     </div>
     <div class="rule"></div>
