@@ -765,7 +765,7 @@ home = f"""
         <div class="eyebrow">In print</div>
         <h2 class="h1 mt2">EXCEPTIONAL.</h2>
         <hr class="accentrule mt3">
-        <p class="lead mt3">A quarterly magazine for Main Street owners and the advisors around
+        <p class="lead mt3">A quarterly magazine for owners, stewards, and the advisors around
           them. One article per vertical, every issue: Life, Business, Wealth.</p>
         <p class="small mt3">Published by Exceptional Companies, jointly serving Exceptional Business
           Advisors, Exceptional Wealth &amp; Family Office, and Exceptional Insurance.</p>
@@ -1771,7 +1771,7 @@ mag = f"""
     <div class="eyebrow">Quarterly &middot; print and digital</div>
     <h1 class="display mt2">EXCEPTIONAL.</h1>
     <hr class="accentrule wide mt3">
-    <p class="lead mt3">A magazine for Main Street owners and the advisors around them. One
+    <p class="lead mt3">A magazine for owners, stewards, and the advisors around them. One
       article per vertical, every issue: Life, Business, Wealth.</p>
   </div>
 </section>
