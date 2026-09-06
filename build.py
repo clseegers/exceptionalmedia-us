@@ -404,7 +404,7 @@ BOOKS = [
     dict(slug="exceptional-stewardship", t="Exceptional Stewardship", os="Installs the Exceptional Wealth OS",
          authors="Tara Seegers and Chris Seegers", status="soon", statlbl="Q2 2028",
          yr="2028", when="Anticipated Q2 2028",
-         blurb="The third book completes the trilogy: what happens to money once it arrives, "
+         blurb="The third book completes the trilogy: what happens to wealth once it arrives, "
                "how it works, and how to leave it well.",
          cov=["EXCEPTIONAL","STEWARDSHIP"]),
 ]
@@ -1421,7 +1421,7 @@ stw = f"""
     <div class="eyebrow">Book three &middot; The Exceptional Wealth OS</div>
     <h1 class="display mt2">Exceptional<br>Stewardship</h1>
     <hr class="accentrule wide mt3">
-    <p class="lead mt3">Tara Seegers and Chris Seegers on what happens to money once it arrives,
+    <p class="lead mt3">Tara Seegers and Chris Seegers on what happens to wealth once it arrives,
       how it works, and how to leave it well. The book that completes the trilogy.</p>
     <div class="mt3"><span class="pill pill--soon">Anticipated Q2 2028</span></div>
   </div>
@@ -1503,7 +1503,7 @@ stw = f"""
 #   3. The winged-horse mark is prohibited on wealth-side pieces. This site is wordmark-only
 #      throughout, so that stop is already satisfied.
 write("/books/exceptional-stewardship/", "Exceptional Stewardship — Book Three of the Exceptional Trilogy",
-      "The third book in the Exceptional trilogy: what happens to money once it arrives, how it "
+      "The third book in the Exceptional trilogy: what happens to wealth once it arrives, how it "
       "works, and how to leave it well. Tara and Chris Seegers on the Exceptional Wealth OS, "
       "anticipated Q2 2028.", stw, depth=2,
       schema=graph(
