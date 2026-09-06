@@ -452,16 +452,16 @@ def bookcard(b, base="/books/"):
 # ══════════════════════════════════════════════════════════════════════════
 
 BIO_CHRIS_LONG = """Chris Seegers is a business owner with a long track record of starting and
-buying companies and building them into successful, self-governed entities. He founded the
-Exceptional Companies family office, is an active owner in many different businesses, and has
-served on leadership teams that have raised and deployed over $750 million in investor capital.
+buying companies and building them into successful, self-governed entities. He founded
+Exceptional Companies, an innovation company. He is an active owner in many different businesses,
+and has served on leadership teams that have raised and deployed over $750 million in investor capital.
 Chris is a &ldquo;capitalist missionary,&rdquo; and his heart is activating and equipping others
 to live exceptional lives.</p><p>Chris is a follower of Jesus, husband to his best friend Tara,
 and father to Jed, Chisum, and Lillian. He is a sibling to seven, and loves deep, authentic
 friendships and old books. Chris and his family live in Colorado Springs surrounded by mountains
 and amazing people."""
 
-BIO_CHRIS_SHORT = """Chris Seegers founded the Exceptional Companies family office and has served
+BIO_CHRIS_SHORT = """Chris Seegers founded Exceptional Companies, an innovation company, and has served
 on leadership teams that raised and deployed over $750 million in investor capital. A
 self-described &ldquo;capitalist missionary,&rdquo; he lives in Colorado Springs with his wife and
 co-author Tara and their three children."""
@@ -1538,7 +1538,7 @@ write("/books/exceptional-by-design/press/",
              "Fulfillment, Fun, Freedom and Business &mdash; across four phases: Dream It, Build "
              "It, Optimize It, Live It. Seventeen chapters, each one an exercise rather than an "
              "argument. It is written to be worked, not read.<br><br>"
-             "Chris Seegers founded the Exceptional Companies family office. Tara Seegers is a "
+             "Chris Seegers founded Exceptional Companies, an innovation company. Tara Seegers is a "
              "Certified Financial Planner&trade; named to Forbes&rsquo; Top Women Wealth Advisors "
              "Best-In-State list. They live in Colorado Springs with their three children.",
         contains=[
@@ -1606,7 +1606,7 @@ write("/books/exceptional-systems/press/",
              "quarterly and annually, each pass compounding on the last. It ends with the phase "
              "most operating systems skip &mdash; the deliberate harvest, whether that is a sale, "
              "a transition or a restructure.<br><br>"
-             "Chris Seegers founded the Exceptional Companies family office. Marcus Seegers is a "
+             "Chris Seegers founded Exceptional Companies, an innovation company. Marcus Seegers is a "
              "Co-Founder of Exceptional Business Advisors, where he owns operations and systems.",
         contains=[
           ("Four phases", "Dream It &middot; Build It &middot; Optimize It &middot; Monetize It"),
@@ -2106,7 +2106,7 @@ about = pagehead("About", "Why we<br>publish.",
 </section>
 """
 write("/about/", "About — Exceptional Media",
-      "Exceptional Media is the publishing arm of Exceptional Companies, a family office in "
+      "Exceptional Media is the publishing arm of Exceptional Companies, an innovation company in "
       "Colorado Springs. We publish what we run on.", about, depth=1,
       schema=graph(crumbs(("Home", "/"), ("About", "/about/")), ORG,
         {"@type": "AboutPage", "url": SITE + "/about/", "name": "About Exceptional Media",
