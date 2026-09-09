@@ -1673,7 +1673,6 @@ pods = pagehead("On air", "The shows.",
             <a class="chip" href="https://podcasts.apple.com/us/podcast/exceptional-companies-podcast/id1765569160" rel="noopener" target="_blank">Apple Podcasts</a>
             <a class="chip" href="https://open.spotify.com/show/5JzPgkrevSMZCFWsXkglJv" rel="noopener" target="_blank">Spotify</a>
             <a class="chip" href="https://www.youtube.com/@ExceptionalCompaniesPodcast" rel="noopener" target="_blank">YouTube</a>
-            <a class="chip" href="https://exceptionalcompanies.captivate.fm" rel="noopener" target="_blank">Captivate</a>
             <a class="chip" href="https://www.amazon.com/Exceptional-Companies-Podcast/dp/B0DFMRW5KY" rel="noopener" target="_blank">Amazon &middot; Audible</a>
           </div>
         </div>
@@ -1744,8 +1743,7 @@ write("/podcasts/", "Podcasts — Exceptional Media",
                         "with any of it.",
          "sameAs": ["https://podcasts.apple.com/us/podcast/exceptional-companies-podcast/id1765569160",
                     "https://open.spotify.com/show/5JzPgkrevSMZCFWsXkglJv",
-                    "https://www.youtube.com/@ExceptionalCompaniesPodcast",
-                    "https://exceptionalcompanies.captivate.fm"]},
+                    "https://www.youtube.com/@ExceptionalCompaniesPodcast"]},
         {"@type": "PodcastSeries", "name": "Colorado Business Podcast",
          "url": "https://coloradobusinesspodcast.com",
          "description": "The entrepreneurs, operators and changemakers building the Colorado "
